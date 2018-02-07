@@ -55,6 +55,71 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.17" />
 
+    <TextView
+        android:id="@+id/tv_temp_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="88dp"
+        android:text="00.0 ℃"
+        android:textColor="#c0FFFFFF"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="@+id/temp_display"
+        app:layout_constraintLeft_toLeftOf="@+id/temp_display" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:text="当前温度"
+        android:textColor="#f0ffffff"
+        android:textSize="45sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_temp_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_temp_value" />
+
+    <TextView
+        android:id="@+id/tv_humi_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="72dp"
+        android:text="00.0 %H"
+        android:textColor="#c0FFFFFF"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="@+id/humi_display"
+        app:layout_constraintLeft_toLeftOf="@+id/humi_display" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:text="当前湿度"
+        android:textColor="#f0ffffff"
+        android:textSize="45sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_humi_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_humi_value" />
+
+    <TextView
+        android:id="@+id/tv_press_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:text="00.0Mpa"
+        android:textColor="#c0FFFFFF"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="@+id/press_display"
+        app:layout_constraintLeft_toLeftOf="@+id/press_display"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:text="当前压强"
+        android:textColor="#f0ffffff"
+        android:textSize="45sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_press_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_press_value" />
+
+
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="500dp"
@@ -68,6 +133,58 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.787" />
+        app:layout_constraintVertical_bias="0.823" />
+
+    <Button
+        android:id="@+id/setup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/setup_up"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.867"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:text="设定"
+        android:textColor="#f0ffffff"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@+id/setup"
+        app:layout_constraintTop_toBottomOf="@+id/setup" />
+
+    <Button
+        android:id="@+id/mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/mute_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.754"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.879" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="36dp"
+        android:text="消音"
+        android:textColor="#f0ffffff"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@+id/mute"
+        app:layout_constraintTop_toBottomOf="@+id/mute" />
 
 </android.support.constraint.ConstraintLayout>

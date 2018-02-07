@@ -1,10 +1,18 @@
 package com.yy.k.AirCompressor;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,9 +24,19 @@ public class MainActivity extends AppCompatActivity {
     DashBoardView tempDisplay;
     DashBoardView humiDisplay;
     DashBoardView pressDisplay;
+    TextView tvTempValue;
+    TextView tvHumiValue;
+    TextView tvPressValue;
     SeekBar seekBar;
+    Button bt_setup;
+    Button bt_mute;
+    Intent intent = new Intent();
+
+    private boolean muteFlag=false;
+    private String speedNumber = "0";
 
     ModbusSlave modbusSlave =new ModbusSlave();
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -31,15 +49,67 @@ public class MainActivity extends AppCompatActivity {
         humiDisplay = findViewById(R.id.humi_display);
         pressDisplay = findViewById(R.id.press_display);
         seekBar = findViewById(R.id.seekBar);
+        bt_setup = findViewById(R.id.setup);
+        bt_mute = findViewById(R.id.mute);
+        tvTempValue = findViewById(R.id.tv_temp_value);
+        tvHumiValue = findViewById(R.id.tv_humi_value);
+        tvPressValue = findViewById(R.id.tv_press_value);
+
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
+
+        bt_setup.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    v.setBackgroundResource(R.drawable.setup_down);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    v.setBackgroundResource(R.drawable.setup_up);
+                }
+                return false;
+            }
+
+        });
+
+        bt_mute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (muteFlag){
+                    bt_mute.setBackgroundResource(R.drawable.mute_up);
+                    muteFlag=false;
+                }else {
+                    bt_mute.setBackgroundResource(R.drawable.mute_down);
+                    muteFlag=true;
+                }
+            }
+        });
+
+        bt_setup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.setClass(MainActivity.this,CompressorSet.class);
+                startActivity(intent);
+            }
+        });
+
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                double temp = progress /10.0;
+                java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
+                speedNumber = myformat.format(temp);
+
                 humiDisplay.setSpeed(progress);
                 tempDisplay.setSpeed(progress);
                 pressDisplay.setSpeed(progress);
+                tvTempValue.setText(speedNumber+"℃");
+                tvHumiValue.setText(speedNumber+"%H");
+                tvPressValue.setText(speedNumber+"Mpa");
             }
 
             @Override

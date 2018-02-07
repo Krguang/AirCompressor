@@ -187,7 +187,7 @@ public class DashBoardView extends View {
 		pointerDraw(canvas);
 
 		calcSpeedNumber();
-		speedNumberDraw(canvas);
+		//speedNumberDraw(canvas);   //显示具体值
 
 		canvas.drawOval(centerShadowOval, mCenterShadowPaint);
 		canvas.drawOval(centerOval, mCenterPaint);
