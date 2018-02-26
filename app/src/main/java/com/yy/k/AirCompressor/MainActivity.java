@@ -2,6 +2,8 @@ package com.yy.k.AirCompressor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,6 +15,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,9 +38,15 @@ public class MainActivity extends AppCompatActivity {
     Intent intent = new Intent();
 
     private boolean muteFlag=false;
-    private String speedNumber = "0";
 
     ModbusSlave modbusSlave =new ModbusSlave();
+    java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
+    private SoundPool sp;
+    private HashMap<Integer,Integer> spMap;
+
+    Timer timer1 = new Timer();
+    TimerTask task1;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sp = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
+        spMap = new HashMap<Integer,Integer>();
+        spMap.put(1, sp.load(this, R.raw.chaoya, 1));
+        spMap.put(2, sp.load(this, R.raw.qianya, 1));
+        playSounds(1,1);
+
+
         modbusSlave.start();
         tempDisplay = findViewById(R.id.temp_display);
         humiDisplay = findViewById(R.id.humi_display);
@@ -74,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         bt_mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               // sp.resume(spMap.get(1));
+                playSounds(1,1);
                 if (muteFlag){
                     bt_mute.setBackgroundResource(R.drawable.mute_up);
                     muteFlag=false;
@@ -92,6 +114,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (timer1 != null){
+            if (task1 != null){
+                task1.cancel();
+            }
+        }
+        task1 = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int getTempFromModbus =modbusSlave.getTemperature();
+                        double doubleTemp = getTempFromModbus/10.0;
+                        String stringTemp = myformat.format(doubleTemp);
+                        tvTempValue.setText(stringTemp+"℃");
+                        tempDisplay.setSpeed(getTempFromModbus);
+                    }
+                });
+            }
+        };
+
+    }
+
+    private void playSounds(int sound, int number){
+        AudioManager am = (AudioManager)this.getSystemService(this.AUDIO_SERVICE);
+        float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float volumnRatio = audioCurrentVolumn/audioMaxVolumn;
+        sp.play(spMap.get(sound), volumnRatio, volumnRatio, 1, 0, 1);
     }
 
     private void pressDisplayInit() {

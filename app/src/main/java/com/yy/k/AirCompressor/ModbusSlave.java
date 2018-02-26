@@ -26,6 +26,7 @@ public class ModbusSlave extends Thread{
     private int[] localArray = new int[1024];
 
     private int jiZuStartStop = 0;
+
     private int temperature = 250;
     private int humidity = 500;
     private int pressure = 500;
@@ -277,4 +278,29 @@ public class ModbusSlave extends Thread{
     public void setPressureLowerLimit(int pressureLowerLimit) {
         this.pressureLowerLimit = pressureLowerLimit;
     }
+
+    public int getJiZuStartStop() {
+        return jiZuStartStop;
+    }
+
+    public int getTemperature() {
+        return temperature;
+    }
+
+    public int getHumidity() {
+        return humidity;
+    }
+
+    public int getPressure() {
+        return pressure;
+    }
+
+    public int getPressureUpperLimit() {
+        return pressureUpperLimit;
+    }
+
+    public int getPressureLowerLimit() {
+        return pressureLowerLimit;
+    }
+
 }
