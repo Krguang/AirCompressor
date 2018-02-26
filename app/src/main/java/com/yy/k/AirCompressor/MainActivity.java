@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTempValue;
     TextView tvHumiValue;
     TextView tvPressValue;
-    SeekBar seekBar;
     Button bt_setup;
     Button bt_mute;
     Intent intent = new Intent();
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         tempDisplay = findViewById(R.id.temp_display);
         humiDisplay = findViewById(R.id.humi_display);
         pressDisplay = findViewById(R.id.press_display);
-        seekBar = findViewById(R.id.seekBar);
         bt_setup = findViewById(R.id.setup);
         bt_mute = findViewById(R.id.mute);
         tvTempValue = findViewById(R.id.tv_temp_value);
@@ -94,34 +92,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                double temp = progress /10.0;
-                java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
-                speedNumber = myformat.format(temp);
-
-                humiDisplay.setSpeed(progress);
-                tempDisplay.setSpeed(progress);
-                pressDisplay.setSpeed(progress);
-                tvTempValue.setText(speedNumber+"℃");
-                tvHumiValue.setText(speedNumber+"%H");
-                tvPressValue.setText(speedNumber+"Mpa");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 
     private void pressDisplayInit() {

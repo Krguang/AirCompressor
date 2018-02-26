@@ -24,5 +24,110 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.937" />
 
+    <SeekBar
+        android:id="@+id/pressure_upper_limit"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:max="1000"
+        android:thumb="@drawable/seek"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.183" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:text="压强报警上限"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/pressure_upper_limit"
+        app:layout_constraintEnd_toStartOf="@+id/pressure_upper_limit" />
+
+    <TextView
+        android:id="@+id/tx_pressure_upper_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="168dp"
+        android:text="00.0MPa"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/pressure_upper_limit"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_upper_limit" />
+
+    <SeekBar
+        android:id="@+id/pressure_lower_limit"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="50dp"
+        android:thumb="@drawable/seek"
+        android:max="1000"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_upper_limit"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_upper_limit" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:text="压强报警下限"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/pressure_lower_limit"
+        app:layout_constraintEnd_toStartOf="@+id/pressure_lower_limit" />
+
+    <TextView
+        android:id="@+id/tx_pressure_lower_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="168dp"
+        android:text="00.0MPa"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/pressure_lower_limit"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_lower_limit" />
+
+    <SeekBar
+        android:id="@+id/slave_address"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="50dp"
+        android:thumb="@drawable/seek"
+        android:max="10"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_lower_limit"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_lower_limit" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:text="从机地址设定"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/slave_address"
+        app:layout_constraintEnd_toStartOf="@+id/slave_address" />
+
+    <TextView
+        android:id="@+id/tx_slave_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="196dp"
+        android:text="1"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/slave_address"
+        app:layout_constraintEnd_toEndOf="@+id/slave_address" />
+
 
 </android.support.constraint.ConstraintLayout>
