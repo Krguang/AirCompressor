@@ -158,8 +158,6 @@ public class ModbusSlave extends Thread{
 
             seBuf[3 + 2 * len] = (byte) crc.getUnsignedByte((byte) ((value >> 8) & 0xff));
             seBuf[4 + 2 * len] = (byte) crc.getUnsignedByte((byte) (value & 0xff));
-
-
         }
 
 
@@ -168,7 +166,7 @@ public class ModbusSlave extends Thread{
         for (int i=0;i<(4+2*len+1);i++){
             disTemp[i] = seBuf[i];
         }
-        Log.d(TAG, "mod_Fun_03_Slav: "+ Arrays.toString(disTemp));
+        //Log.d(TAG, "mod_Fun_03_Slav: "+ Arrays.toString(disTemp));
     }
 
 
@@ -245,6 +243,7 @@ public class ModbusSlave extends Thread{
     private void slav_hand_10() {
 
         localArray[6] = temperature;
+        Log.d(TAG, "slav_hand_10: "+temperature);
         localArray[7] = humidity;
         localArray[8] = pressure;
         localArray[9] = pressureUpperLimit;

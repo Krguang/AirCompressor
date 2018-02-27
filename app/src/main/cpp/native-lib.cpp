@@ -140,10 +140,6 @@ Java_com_yy_k_AirCompressor_Serial_Write(JNIEnv *env, jobject instance, jintArra
     if(len <= 0)
         return -1;
 
-    jintArray array = env-> NewIntArray(len);
-
-    if(array == NULL){array=NULL;return -1;}
-
     jint *body = env->GetIntArrayElements(buffer_, 0);
 
     jint i = 0;
@@ -154,7 +150,8 @@ Java_com_yy_k_AirCompressor_Serial_Write(JNIEnv *env, jobject instance, jintArra
 
     write(fd, num, len);
 
-    array = NULL;
+    env->ReleaseIntArrayElements(buffer_, body, 0);
+
 
     return 0;
 }
