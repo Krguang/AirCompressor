@@ -29,10 +29,10 @@ public class ModbusSlave extends Thread{
 
     private int temperature = 250;
     private int humidity = 500;
-    private int pressure = 500;
+    private int pressure = 0;
 
-    private int pressureUpperLimit = 900;
-    private int pressureLowerLimit =200;
+   // private int pressureUpperLimit = 900;
+  //  private int pressureLowerLimit =200;
 
 
     @Override
@@ -65,8 +65,8 @@ public class ModbusSlave extends Thread{
                 }
 
                 onDataReceived(rxTempByteArray,rxTemp.size());
-                Log.d(TAG, "run: "+rxTemp.toString());
-                Log.d(TAG, "run: "+rxTemp.size());
+              //  Log.d(TAG, "run: "+rxTemp.toString());
+              //  Log.d(TAG, "run: "+rxTemp.size());
                 rxTemp.clear();
             }
 
@@ -194,7 +194,6 @@ public class ModbusSlave extends Thread{
         }else {
             localArray[0] |= 0x01;
         }
-
     }
 
     /***
@@ -242,12 +241,12 @@ public class ModbusSlave extends Thread{
      */
     private void slav_hand_10() {
 
-        localArray[6] = temperature;
+        temperature = localArray[6];
         Log.d(TAG, "slav_hand_10: "+temperature);
-        localArray[7] = humidity;
-        localArray[8] = pressure;
-        localArray[9] = pressureUpperLimit;
-        localArray[10] = pressureLowerLimit;
+        humidity = localArray[7];
+        pressure = localArray[8];
+        //pressureUpperLimit = localArray[9];
+        //pressureLowerLimit = localArray[10];
     }
 
     public void setSLAV_addr(int SLAV_addr) {
@@ -270,14 +269,6 @@ public class ModbusSlave extends Thread{
         this.pressure = pressure;
     }
 
-    public void setPressureUpperLimit(int pressureUpperLimit) {
-        this.pressureUpperLimit = pressureUpperLimit;
-    }
-
-    public void setPressureLowerLimit(int pressureLowerLimit) {
-        this.pressureLowerLimit = pressureLowerLimit;
-    }
-
     public int getJiZuStartStop() {
         return jiZuStartStop;
     }
@@ -293,13 +284,4 @@ public class ModbusSlave extends Thread{
     public int getPressure() {
         return pressure;
     }
-
-    public int getPressureUpperLimit() {
-        return pressureUpperLimit;
-    }
-
-    public int getPressureLowerLimit() {
-        return pressureLowerLimit;
-    }
-
 }

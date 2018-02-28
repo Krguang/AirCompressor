@@ -152,6 +152,5 @@ Java_com_yy_k_AirCompressor_Serial_Write(JNIEnv *env, jobject instance, jintArra
 
     env->ReleaseIntArrayElements(buffer_, body, 0);
 
-
     return 0;
 }
