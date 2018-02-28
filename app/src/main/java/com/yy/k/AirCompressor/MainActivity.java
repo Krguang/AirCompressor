@@ -146,12 +146,16 @@ public class MainActivity extends AppCompatActivity {
         timer1.schedule(task1, 1000, 1000);
     }
 
-
+    @Override
+    protected void onDestroy() {       // activity被销毁时关闭串口接收线程和串口
+        super.onDestroy();
+        modbusSlave.interrupt();
+        modbusSlave.closeCom();
+    }
 
     private void slaveAddressChange(){
         modbusSlave.setSLAV_addr(sharedParameterSet.getInt("从机地址",1));
     }
-
 
     private void dataDispaly(){
         int getTempFromModbus = modbusSlave.getTemperature();

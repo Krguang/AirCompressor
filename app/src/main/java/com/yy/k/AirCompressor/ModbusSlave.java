@@ -34,6 +34,9 @@ public class ModbusSlave extends Thread{
    // private int pressureUpperLimit = 900;
   //  private int pressureLowerLimit =200;
 
+    public void closeCom(){
+        com2.Close();
+    }
 
     @Override
     /**
