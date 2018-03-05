@@ -38,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
     TextView tvPressValue;
     Button bt_setup;
     Button bt_mute;
+    Button bt_switch;
+
     Intent intent = new Intent();
 
     private boolean muteFlag=true;
+    private boolean powerSwitchFlag = false;
 
     ModbusSlave modbusSlave =new ModbusSlave();
     java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
@@ -51,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
     TimerTask task1;
 
     SharedPreferences sharedParameterSet;
-    SharedPreferences.Editor editor;
 
     private boolean alermFlag =false;
-
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         pressDisplay = findViewById(R.id.press_display);
         bt_setup = findViewById(R.id.setup);
         bt_mute = findViewById(R.id.mute);
+        bt_switch = findViewById(R.id.power_switch);
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
@@ -101,6 +103,21 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+        });
+
+        bt_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (powerSwitchFlag){
+                    bt_switch.setBackgroundResource(R.drawable.start);
+                    modbusSlave.setJiZuStartStop(0);
+                    powerSwitchFlag = false;
+                }else {
+                    bt_switch.setBackgroundResource(R.drawable.stop);
+                    modbusSlave.setJiZuStartStop(1);
+                    powerSwitchFlag = true;
+                }
+            }
         });
 
         bt_mute.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         float audioCurrentVolumn = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         float volumnRatio = audioCurrentVolumn/audioMaxVolumn;
         sp.play(spMap.get(sound), volumnRatio, volumnRatio, 1, 0, 1);
-    }
+}
 
     private void pressDisplayInit() {
         String[] pressFixedLevel={"0 Mpa","10 Mpa","20 Mpa","30 Mpa","40 Mpa","50 Mpa","60 Mpa","70Mpa","80Mpa","90Mpa","100Mpa"};
