@@ -39,11 +39,13 @@ public class MainActivity extends AppCompatActivity {
     Button bt_setup;
     Button bt_mute;
     Button bt_switch;
+    Button bt_connectStatus;
 
     Intent intent = new Intent();
 
     private boolean muteFlag=true;
     private boolean powerSwitchFlag = false;
+    private boolean connectFlag = false;
 
     ModbusSlave modbusSlave =new ModbusSlave();
     java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
@@ -51,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<Integer,Integer> spMap;
 
     Timer timer1 = new Timer();
+    Timer timer2 = new Timer();
     TimerTask task1;
+
 
     SharedPreferences sharedParameterSet;
 
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         bt_setup = findViewById(R.id.setup);
         bt_mute = findViewById(R.id.mute);
         bt_switch = findViewById(R.id.power_switch);
+        bt_connectStatus = findViewById(R.id.connect_status);
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
@@ -155,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         slaveAddressChange();
                         dataDispaly();
+                        setBt_connectStatus();
                     }
                 });
             }
@@ -172,6 +178,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void slaveAddressChange(){
         modbusSlave.setSLAV_addr(sharedParameterSet.getInt("从机地址",1));
+    }
+
+    private void setBt_connectStatus(){
+        if (connectFlag){
+            connectFlag = false;
+            bt_connectStatus.setBackgroundResource(R.drawable.connected);
+        }else {
+            connectFlag =true;
+            bt_connectStatus.setBackgroundResource(R.drawable.no_connect);
+        }
     }
 
     private void dataDispaly(){
@@ -214,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        if (getPressFromModbus < pressureLowerLimit){
+        if (getPressFromModbus < pressureLowerLimit && getPressFromModbus != 0){
             if (alermFlag){
                 tvPressValue.setText("");
             }else{

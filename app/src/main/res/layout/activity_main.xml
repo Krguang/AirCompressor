@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yy.k.AirCompressor.MainActivity"
     android:background="@drawable/background"
-    >
+    tools:context="com.yy.k.AirCompressor.MainActivity">
 
 
     <TextView
@@ -18,8 +17,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="空压机实时监控系统"
-        android:textSize="100sp"
         android:textColor="#c0FFFFFF"
+        android:textSize="100sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,8 +122,7 @@
         android:textColor="#c0FFFFFF"
         android:textSize="80sp"
         app:layout_constraintBottom_toBottomOf="@+id/press_display"
-        app:layout_constraintLeft_toLeftOf="@+id/press_display"
-         />
+        app:layout_constraintLeft_toLeftOf="@+id/press_display" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -207,13 +205,39 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
+        android:layout_marginLeft="32dp"
         android:text="起停"
         android:textColor="#f0ffffff"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="@+id/power_switch"
         app:layout_constraintTop_toBottomOf="@+id/power_switch" />
 
+    <Button
+        android:id="@+id/connect_status"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/no_connect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.849" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="通讯指示"
+        android:textColor="#f0ffffff"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/connect_status"
+        app:layout_constraintStart_toStartOf="@+id/connect_status"
+        app:layout_constraintTop_toBottomOf="@+id/connect_status" />
 
 
 </android.support.constraint.ConstraintLayout>
