@@ -31,8 +31,12 @@ public class ModbusSlave extends Thread{
     private int humidity = 500;
     private int pressure = 0;
 
+    private boolean getDataFlag =false;
    // private int pressureUpperLimit = 900;
   //  private int pressureLowerLimit =200;
+
+    private int overPressure = 0;
+    private int underPressure = 0;
 
     public void closeCom(){
         com2.Close();
@@ -68,8 +72,7 @@ public class ModbusSlave extends Thread{
                 }
 
                 onDataReceived(rxTempByteArray,rxTemp.size());
-              //  Log.d(TAG, "run: "+rxTemp.toString());
-              //  Log.d(TAG, "run: "+rxTemp.size());
+                getDataFlag = true;
                 rxTemp.clear();
             }
 
@@ -248,8 +251,8 @@ public class ModbusSlave extends Thread{
         Log.d(TAG, "slav_hand_10: "+temperature);
         humidity = localArray[7];
         pressure = localArray[8];
-        //pressureUpperLimit = localArray[9];
-        //pressureLowerLimit = localArray[10];
+        overPressure = (localArray[15]>>13)&1;
+        underPressure = (localArray[15]>>12)&1;
     }
 
     public void setSLAV_addr(int SLAV_addr) {
@@ -286,5 +289,27 @@ public class ModbusSlave extends Thread{
 
     public int getPressure() {
         return pressure;
+    }
+    public int getOverPressure() {
+        return overPressure;
+    }
+
+    public int getUnderPressure() {
+        return underPressure;
+    }
+    public boolean isGetDataFlag() {
+        return getDataFlag;
+    }
+
+    public void setGetDataFlag(boolean getDataFlag) {
+        this.getDataFlag = getDataFlag;
+    }
+
+    public void setOverPressure(int overPressure) {
+        this.overPressure = overPressure;
+    }
+
+    public void setUnderPressure(int underPressure) {
+        this.underPressure = underPressure;
     }
 }

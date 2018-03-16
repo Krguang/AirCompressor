@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTempValue;
     TextView tvHumiValue;
     TextView tvPressValue;
-    Button bt_setup;
+   // Button bt_setup;
     Button bt_mute;
-    Button bt_switch;
+  //  Button bt_switch;
     Button bt_connectStatus;
 
     Intent intent = new Intent();
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     Timer timer1 = new Timer();
     Timer timer2 = new Timer();
     TimerTask task1;
+    TimerTask task2;
 
 
     SharedPreferences sharedParameterSet;
@@ -83,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
         tempDisplay = findViewById(R.id.temp_display);
         humiDisplay = findViewById(R.id.humi_display);
         pressDisplay = findViewById(R.id.press_display);
-        bt_setup = findViewById(R.id.setup);
+    //    bt_setup = findViewById(R.id.setup);
         bt_mute = findViewById(R.id.mute);
-        bt_switch = findViewById(R.id.power_switch);
+    //    bt_switch = findViewById(R.id.power_switch);
         bt_connectStatus = findViewById(R.id.connect_status);
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
-
+/*
 
         bt_setup.setOnTouchListener(new View.OnTouchListener() {
 
@@ -125,6 +126,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        bt_setup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.setClass(MainActivity.this,CompressorSet.class);
+                startActivity(intent);
+            }
+        });
+   */
+
         bt_mute.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -139,19 +150,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bt_setup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.setClass(MainActivity.this,CompressorSet.class);
-                startActivity(intent);
-            }
-        });
+
 
         if (timer1 != null){
             if (task1 != null){
                 task1.cancel();
             }
         }
+        if (timer2 != null){
+            if (task2 != null){
+                task2.cancel();
+            }
+        }
+
         task1 = new TimerTask() {
             @Override
             public void run() {
@@ -166,7 +177,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        task2 = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        modbusSlave.setGetDataFlag(false);
+                    }
+                });
+            }
+        };
+
         timer1.schedule(task1, 1000, 1000);
+        timer2.schedule(task2, 1000, 10000);
     }
 
     @Override
@@ -181,12 +205,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setBt_connectStatus(){
-        if (connectFlag){
-            connectFlag = false;
+
+        if (modbusSlave.isGetDataFlag()){
             bt_connectStatus.setBackgroundResource(R.drawable.connected);
         }else {
-            connectFlag =true;
             bt_connectStatus.setBackgroundResource(R.drawable.no_connect);
+            modbusSlave.setOverPressure(0);
+            modbusSlave.setUnderPressure(0);
         }
     }
 
@@ -194,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
         int getTempFromModbus = modbusSlave.getTemperature();
         int getHumiFromModbus = modbusSlave.getHumidity();
         int getPressFromModbus = modbusSlave.getPressure();
+        Log.d("test", "dataDispaly: getPressFromModbus"+getPressFromModbus);
         int pressureUpperLimit = sharedParameterSet.getInt("压力报警上限",800);
         int pressureLowerLimit = sharedParameterSet.getInt("压力报警下限",300);
 
@@ -207,15 +233,41 @@ public class MainActivity extends AppCompatActivity {
 
         tvTempValue.setText(stringTempTemp+"℃");
         tvHumiValue.setText(stringHumiTemp+"%H");
-        tvPressValue.setText(stringPressTemp+"MPa");
+        tvPressValue.setText(stringPressTemp+"Pa");
         tvTempValue.setTextColor(0xdfffffff);
         tvHumiValue.setTextColor(0xdfffffff);
         tvPressValue.setTextColor(0xdfffffff);
 
-        tempDisplay.setSpeed(getTempFromModbus);
+        tempDisplay.setSpeed(getTempFromModbus+300);
         humiDisplay.setSpeed(getHumiFromModbus);
-        pressDisplay.setSpeed(getPressFromModbus);
+        pressDisplay.setSpeed(getPressFromModbus+500);
 
+        alermFlag = !alermFlag;
+        if (modbusSlave.getOverPressure() == 1){
+            if (alermFlag){
+                tvPressValue.setText("");
+            }else{
+                tvPressValue.setText(stringPressTemp+"Pa");
+                tvPressValue.setTextColor(0xdfff0000);
+
+                if (!muteFlag){
+                    playSounds(1,1);
+                }
+            }
+        }
+
+        if (modbusSlave.getUnderPressure() == 1){
+            if (alermFlag){
+                tvPressValue.setText("");
+            }else{
+                tvPressValue.setText(stringPressTemp+"Pa");
+                tvPressValue.setTextColor(0xDFFFFF00);
+                if (!muteFlag){
+                    playSounds(2,1);
+                }
+            }
+        }
+/*
         alermFlag = !alermFlag;
         if (getPressFromModbus > pressureUpperLimit ){
             if (alermFlag){
@@ -241,6 +293,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        */
     }
 
     private void playSounds(int sound, int number){
@@ -252,14 +306,14 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void pressDisplayInit() {
-        String[] pressFixedLevel={"0 Mpa","10 Mpa","20 Mpa","30 Mpa","40 Mpa","50 Mpa","60 Mpa","70Mpa","80Mpa","90Mpa","100Mpa"};
+        String[] pressFixedLevel={"-50 pa","-40 pa","-30 pa","-20 pa","-10 pa","0 pa","10 pa","20 pa","30 pa","40 pa","50 pa"};
         pressDisplay.setMark(" 当前压力");
-        pressDisplay.setSpeedUint("Mpa");
+        pressDisplay.setSpeedUint("pa");
         pressDisplay.setFixedLevel(pressFixedLevel);
     }
 
     private  void tempDisplayInit(){
-        String[] tempFixedLevel={"0 ℃","10 ℃","20 ℃","30 ℃","40 ℃","50 ℃","60 ℃","70 ℃","80 ℃","90 ℃","100 ℃"};
+        String[] tempFixedLevel={"-30 ℃","-20 ℃","-10 ℃","0 ℃","10 ℃","20 ℃","30 ℃","40 ℃","50 ℃","60 ℃","70 ℃"};
         tempDisplay.setMark("当前温度");
         tempDisplay.setSpeedUint("   ℃");
         tempDisplay.setFixedLevel(tempFixedLevel);
