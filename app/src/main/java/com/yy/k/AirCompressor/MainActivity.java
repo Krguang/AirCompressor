@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
 
+
+
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
@@ -149,8 +151,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         if (timer1 != null){
             if (task1 != null){
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         int getTempFromModbus = modbusSlave.getTemperature();
         int getHumiFromModbus = modbusSlave.getHumidity();
         int getPressFromModbus = modbusSlave.getPressure();
-        Log.d("test", "dataDispaly: getPressFromModbus"+getPressFromModbus);
+       // Log.d("test", "dataDispaly: getPressFromModbus"+getPressFromModbus);
         int pressureUpperLimit = sharedParameterSet.getInt("压力报警上限",800);
         int pressureLowerLimit = sharedParameterSet.getInt("压力报警下限",300);
 
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         tempDisplay.setSpeed(getTempFromModbus+300);
         humiDisplay.setSpeed(getHumiFromModbus);
-        pressDisplay.setSpeed(getPressFromModbus+500);
+        pressDisplay.setSpeed(getPressFromModbus+850);
 
         alermFlag = !alermFlag;
         if (modbusSlave.getOverPressure() == 1){
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void pressDisplayInit() {
-        String[] pressFixedLevel={"-50 pa","-40 pa","-30 pa","-20 pa","-10 pa","0 pa","10 pa","20 pa","30 pa","40 pa","50 pa"};
+        String[] pressFixedLevel={"-250 pa","-220 pa","-190 pa","-160 pa","-130 pa","-100 pa","-70 pa","-40 pa","-10 pa","20 pa","50 pa"};
         pressDisplay.setMark(" 当前压力");
         pressDisplay.setSpeedUint("pa");
         pressDisplay.setFixedLevel(pressFixedLevel);
@@ -324,5 +324,19 @@ public class MainActivity extends AppCompatActivity {
         humiDisplay.setMark("当前湿度");
         humiDisplay.setSpeedUint("  %h");
         humiDisplay.setFixedLevel(humiFixedLevel);
+    }
+
+    public void bt_alarm_record(View view) {
+
+        intent.setClass(this,AlarmRecord.class);
+        startActivity(intent);
+
+    }
+
+
+    public void bt_line_chart(View view) {
+
+        intent.setClass(this,TrendLineChart.class);
+        startActivity(intent);
     }
 }

@@ -25,6 +25,20 @@
 
         </activity>
 
+        <activity android:name=".AlarmRecord"
+            android:theme="@android:style/Theme.Dialog"
+            >
+
+        </activity>
+
+        <activity
+
+            android:name=".TrendLineChart"
+            android:theme="@android:style/Theme.Dialog"
+            >
+        </activity>
+
+
         <receiver
             android:name=".BootRestartReceiver"
             android:enabled="true"
