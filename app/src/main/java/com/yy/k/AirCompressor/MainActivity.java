@@ -19,7 +19,11 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,16 +40,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTempValue;
     TextView tvHumiValue;
     TextView tvPressValue;
-   // Button bt_setup;
     Button bt_mute;
-  //  Button bt_switch;
     Button bt_connectStatus;
-
     Intent intent = new Intent();
-
     private boolean muteFlag=true;
-    private boolean powerSwitchFlag = false;
-    private boolean connectFlag = false;
 
     ModbusSlave modbusSlave =new ModbusSlave();
     java.text.DecimalFormat myformat=new java.text.DecimalFormat("00.0");
@@ -57,10 +55,19 @@ public class MainActivity extends AppCompatActivity {
     TimerTask task1;
     TimerTask task2;
 
-
     SharedPreferences sharedParameterSet;
 
     private boolean alermFlag =false;
+
+    private int overPressureTemp = 0;
+    private int underPressureTemp = 0;
+
+
+    public static List<String> listTime=new ArrayList<>();
+    public static List<String> listData=new ArrayList<>();
+
+    SimpleDateFormat simpleDateFormat;
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -73,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
         sharedParameterSet = this.getSharedPreferences("parameterSet",this.MODE_WORLD_WRITEABLE);
 
+        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+
         sp = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
         spMap = new HashMap<Integer,Integer>();
         spMap.put(1, sp.load(this, R.raw.chaoya, 1));
         spMap.put(2, sp.load(this, R.raw.qianya, 1));
         playSounds(1,1);
-
 
         modbusSlave.start();
         tempDisplay = findViewById(R.id.temp_display);
@@ -92,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
-
 
         bt_mute.setOnClickListener(new View.OnClickListener() {
 
@@ -128,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         slaveAddressChange();
                         dataDispaly();
                         setBt_connectStatus();
+                        createAlarmData();
                     }
                 });
             }
@@ -156,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         modbusSlave.closeCom();
     }
 
-    private void slaveAddressChange(){
+    private void slaveAddressChange(){              //从机地址设定
         modbusSlave.setSLAV_addr(sharedParameterSet.getInt("从机地址",1));
     }
 
-    private void setBt_connectStatus(){
+    private void setBt_connectStatus(){             //通讯指示
 
         if (modbusSlave.isGetDataFlag()){
             bt_connectStatus.setBackgroundResource(R.drawable.connected);
@@ -171,7 +179,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void dataDispaly(){
+
+    private void createAlarmData(){     //产生报警数据
+
+        if(overPressureTemp != modbusSlave.getOverPressure()){
+
+            overPressureTemp = modbusSlave.getOverPressure();
+
+            if (1 == overPressureTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("超压");
+            }
+
+            if (0 == overPressureTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("恢复正常");
+            }
+
+        }
+
+
+        if(underPressureTemp != modbusSlave.getUnderPressure()){
+
+            underPressureTemp = modbusSlave.getUnderPressure();
+
+            if (1 == underPressureTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("欠压");
+            }
+
+            if (0 == underPressureTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("恢复正常");
+            }
+
+        }
+    }
+
+    private void dataDispaly(){         //数据处理和显示
 
         int getTempFromModbus = ModbusSlave.temperature;
         int getHumiFromModbus = ModbusSlave.humidity;

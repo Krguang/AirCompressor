@@ -32,9 +32,8 @@ import java.util.Random;
 public class AlarmRecord extends Activity {
 
 
-
-    private List<String> listTime=new ArrayList<>();
-    private List<String> listData=new ArrayList<>();
+    MyAdapter adapter;
+    ListView listView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,33 +42,30 @@ public class AlarmRecord extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_record);
 
-        ListView listView = findViewById(R.id.lv_alarm_record);
-
-
-        for (int i=0;i<200;i++){
-            listTime.add("2018-08-18 11:"+i);
-        }
-
-        for (int i=0;i<200;i++){
-            listData.add("压强过高");
-        }
-
-        final MyAdapter adapter=new MyAdapter();
-
+        listView = findViewById(R.id.lv_alarm_record);
+        adapter=new MyAdapter();
         listView.setAdapter(adapter);
+    }
 
+    public void bt_alarm_clean(View view) {
+
+        MainActivity.listData.clear();
+        MainActivity.listTime.clear();
+
+        adapter=new MyAdapter();
+        listView.setAdapter(adapter);
     }
 
     class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return listTime.size();
+            return MainActivity.listTime.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return listTime.get(i);
+            return MainActivity.listTime.get(i);
         }
 
         @Override
@@ -87,12 +83,23 @@ public class AlarmRecord extends Activity {
             TextView tv_time= view.findViewById(R.id.tv_time);
             TextView tv_data= view.findViewById(R.id.tv_data);
 
-            tv_time.setText(listTime.get(i));
-            tv_data.setText(listData.get(i));
+            tv_time.setText(MainActivity.listTime.get(i));
+            tv_data.setText(MainActivity.listData.get(i));
+
+            if (MainActivity.listData.get(i) == "超压"){
+                tv_data.setTextColor(Color.RED);
+            }
+
+            if (MainActivity.listData.get(i) == "欠压"){
+                tv_data.setTextColor(Color.YELLOW);
+            }
+
+            if (MainActivity.listData.get(i) == "恢复正常"){
+                tv_data.setTextColor(Color.BLACK);
+            }
 
             return view;
         }
-
 
     }
 }

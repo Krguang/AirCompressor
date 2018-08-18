@@ -5,7 +5,6 @@
     android:layout_width="480dp"
     android:layout_height="800dp"
     android:background="#d8e4bc"
-
     >
 
 
@@ -26,6 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:onClick="bt_alarm_clean"
         android:id="@+id/button"
         style="@android:style/Widget.Holo.Button"
         android:layout_width="wrap_content"
