@@ -60,7 +60,6 @@ public class AlarmRecord extends Activity {
 
     }
 
-
     class MyAdapter extends BaseAdapter {
 
         @Override
