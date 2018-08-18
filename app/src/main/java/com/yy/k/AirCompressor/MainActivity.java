@@ -84,61 +84,15 @@ public class MainActivity extends AppCompatActivity {
         tempDisplay = findViewById(R.id.temp_display);
         humiDisplay = findViewById(R.id.humi_display);
         pressDisplay = findViewById(R.id.press_display);
-    //    bt_setup = findViewById(R.id.setup);
         bt_mute = findViewById(R.id.mute);
-    //    bt_switch = findViewById(R.id.power_switch);
         bt_connectStatus = findViewById(R.id.connect_status);
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
-
-
-
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
 
-
-/*
-
-        bt_setup.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    v.setBackgroundResource(R.drawable.setup_down);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    v.setBackgroundResource(R.drawable.setup_up);
-                }
-                return false;
-            }
-
-        });
-
-        bt_switch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (powerSwitchFlag){
-                    bt_switch.setBackgroundResource(R.drawable.start);
-                    modbusSlave.setJiZuStartStop(0);
-                    powerSwitchFlag = false;
-                }else {
-                    bt_switch.setBackgroundResource(R.drawable.stop);
-                    modbusSlave.setJiZuStartStop(1);
-                    powerSwitchFlag = true;
-                }
-            }
-        });
-
-
-        bt_setup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.setClass(MainActivity.this,CompressorSet.class);
-                startActivity(intent);
-            }
-        });
-   */
 
         bt_mute.setOnClickListener(new View.OnClickListener() {
 
@@ -304,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 
     public void bt_line_chart(View view) {
 
