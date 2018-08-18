@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     TimerTask task2;
 
     SharedPreferences sharedParameterSet;
+    SharedPreferences sharedPreferencesAlarmRecord;
 
     private boolean alermFlag =false;
 
@@ -63,11 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private int underPressureTemp = 0;
 
 
-    public static List<String> listTime=new ArrayList<>();
-    public static List<String> listData=new ArrayList<>();
+    private  List<String> listTime=new ArrayList<>();
+    private  List<String> listData=new ArrayList<>();
 
     SimpleDateFormat simpleDateFormat;
 
+    SharedPreferences.Editor editorAlarmRecord;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -79,8 +81,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sharedParameterSet = this.getSharedPreferences("parameterSet",this.MODE_WORLD_WRITEABLE);
+        sharedPreferencesAlarmRecord = this.getSharedPreferences("PreferencesAlarmRecord",this.MODE_WORLD_WRITEABLE);
+        editorAlarmRecord = sharedPreferencesAlarmRecord.edit();
+
 
         simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+
 
         sp = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
         spMap = new HashMap<Integer,Integer>();
@@ -180,6 +186,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void writeDataToShared(){
+
+        editorAlarmRecord.putInt("listTime_size",listTime.size());
+
+        for (int i=0;i<listTime.size();i++){
+
+            editorAlarmRecord.putString("listTime_"+i,listTime.get(i));
+            editorAlarmRecord.putString("listData_"+i,listData.get(i));
+        }
+
+        editorAlarmRecord.apply();
+    }
+
     private void createAlarmData(){     //产生报警数据
 
         if(overPressureTemp != modbusSlave.getOverPressure()){
@@ -202,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
                 listData.add("恢复正常");
             }
 
+
+            writeDataToShared();
+
+
         }
 
 
@@ -222,6 +245,8 @@ public class MainActivity extends AppCompatActivity {
                 listTime.add(simpleDateFormat.format(date));
                 listData.add("恢复正常");
             }
+
+            writeDataToShared();
 
         }
     }

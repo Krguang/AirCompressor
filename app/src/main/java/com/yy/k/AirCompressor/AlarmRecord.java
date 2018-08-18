@@ -2,6 +2,7 @@ package com.yy.k.AirCompressor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,6 +36,12 @@ public class AlarmRecord extends Activity {
     MyAdapter adapter;
     ListView listView;
 
+    private  List<String> listTime=new ArrayList<>();
+    private  List<String> listData=new ArrayList<>();
+
+    SharedPreferences sharedPreferencesAlarmRecord;
+    SharedPreferences.Editor editorAlarmRecord;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -42,15 +49,32 @@ public class AlarmRecord extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_record);
 
+        sharedPreferencesAlarmRecord = this.getSharedPreferences("PreferencesAlarmRecord",this.MODE_WORLD_WRITEABLE);
+        editorAlarmRecord = sharedPreferencesAlarmRecord.edit();
+
+        listData.clear();
+        listTime.clear();
+
+        int size = sharedPreferencesAlarmRecord.getInt("listTime_size",0);
+        for (int i = 0;i<size;i++){
+
+            listTime.add(sharedPreferencesAlarmRecord.getString("listTime_"+i,null));
+            listData.add(sharedPreferencesAlarmRecord.getString("listData_"+i,null));
+        }
+
         listView = findViewById(R.id.lv_alarm_record);
         adapter=new MyAdapter();
         listView.setAdapter(adapter);
+
     }
 
     public void bt_alarm_clean(View view) {
 
-        MainActivity.listData.clear();
-        MainActivity.listTime.clear();
+        editorAlarmRecord.clear();          //清空sharedPreferences
+        editorAlarmRecord.apply();
+
+        listData.clear();                   //清空arraylist
+        listTime.clear();
 
         adapter=new MyAdapter();
         listView.setAdapter(adapter);
@@ -60,12 +84,12 @@ public class AlarmRecord extends Activity {
 
         @Override
         public int getCount() {
-            return MainActivity.listTime.size();
+            return listTime.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return MainActivity.listTime.get(i);
+            return listTime.get(i);
         }
 
         @Override
@@ -83,19 +107,19 @@ public class AlarmRecord extends Activity {
             TextView tv_time= view.findViewById(R.id.tv_time);
             TextView tv_data= view.findViewById(R.id.tv_data);
 
-            tv_time.setText(MainActivity.listTime.get(i));
-            tv_data.setText(MainActivity.listData.get(i));
+            tv_time.setText(listTime.get(i));
+            tv_data.setText(listData.get(i));
 
-            if (MainActivity.listData.get(i) == "超压"){
+            if (listData.get(i).equals("超压")){
                 tv_data.setTextColor(Color.RED);
             }
 
-            if (MainActivity.listData.get(i) == "欠压"){
-                tv_data.setTextColor(Color.YELLOW);
+            if (listData.get(i).equals("欠压")){
+                tv_data.setTextColor(0xffffff00);
             }
 
-            if (MainActivity.listData.get(i) == "恢复正常"){
-                tv_data.setTextColor(Color.BLACK);
+            if (listData.get(i).equals("恢复正常")){
+                tv_data.setTextColor(0xff00cc00);
             }
 
             return view;
