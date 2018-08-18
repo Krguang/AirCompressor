@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
+
+
 /*
 
         bt_setup.setOnTouchListener(new View.OnTouchListener() {
@@ -216,9 +218,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dataDispaly(){
+
+        /*
         int getTempFromModbus = modbusSlave.getTemperature();
         int getHumiFromModbus = modbusSlave.getHumidity();
         int getPressFromModbus = modbusSlave.getPressure();
+        */
+        int getTempFromModbus = ModbusSlave.temperature;
+        int getHumiFromModbus = ModbusSlave.humidity;
+        int getPressFromModbus = ModbusSlave.pressure;
+
        // Log.d("test", "dataDispaly: getPressFromModbus"+getPressFromModbus);
         int pressureUpperLimit = sharedParameterSet.getInt("压力报警上限",800);
         int pressureLowerLimit = sharedParameterSet.getInt("压力报警下限",300);

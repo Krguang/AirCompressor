@@ -27,9 +27,10 @@ public class ModbusSlave extends Thread{
 
     private int jiZuStartStop = 0;
 
-    private int temperature = 250;
-    private int humidity = 500;
-    private int pressure = 0;
+    public static int temperature = 250;
+    public static int humidity = 500;
+    public static int pressure = 0;
+
 
     private boolean getDataFlag =false;
    // private int pressureUpperLimit = 900;
@@ -279,17 +280,7 @@ public class ModbusSlave extends Thread{
         return jiZuStartStop;
     }
 
-    public int getTemperature() {
-        return temperature;
-    }
 
-    public int getHumidity() {
-        return humidity;
-    }
-
-    public int getPressure() {
-        return pressure;
-    }
     public int getOverPressure() {
         return overPressure;
     }
