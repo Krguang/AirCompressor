@@ -219,22 +219,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void dataDispaly(){
 
-        /*
-        int getTempFromModbus = modbusSlave.getTemperature();
-        int getHumiFromModbus = modbusSlave.getHumidity();
-        int getPressFromModbus = modbusSlave.getPressure();
-        */
         int getTempFromModbus = ModbusSlave.temperature;
         int getHumiFromModbus = ModbusSlave.humidity;
         int getPressFromModbus = ModbusSlave.pressure;
 
-       // Log.d("test", "dataDispaly: getPressFromModbus"+getPressFromModbus);
-        int pressureUpperLimit = sharedParameterSet.getInt("压力报警上限",800);
-        int pressureLowerLimit = sharedParameterSet.getInt("压力报警下限",300);
-
         double doubleTempTemp = getTempFromModbus/10.0;
         double doubleHumiTemp = getHumiFromModbus/10.0;
-        double doublePressTemp = getPressFromModbus/10.0;
+        double doublePressTemp = getPressFromModbus*0.3 - 250.0;
 
         String stringTempTemp = myformat.format(doubleTempTemp);
         String stringHumiTemp = myformat.format(doubleHumiTemp);
@@ -249,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
         tempDisplay.setSpeed(getTempFromModbus+300);
         humiDisplay.setSpeed(getHumiFromModbus);
-        pressDisplay.setSpeed(getPressFromModbus+850);
+        pressDisplay.setSpeed(getPressFromModbus);
 
         alermFlag = !alermFlag;
         if (modbusSlave.getOverPressure() == 1){
@@ -276,34 +267,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-/*
-        alermFlag = !alermFlag;
-        if (getPressFromModbus > pressureUpperLimit ){
-            if (alermFlag){
-                tvPressValue.setText("");
-            }else{
-                tvPressValue.setText(stringPressTemp+"MPa");
-                tvPressValue.setTextColor(0xdfff0000);
-
-                if (!muteFlag){
-                    playSounds(1,1);
-                }
-            }
-        }
-
-        if (getPressFromModbus < pressureLowerLimit && getPressFromModbus != 0){
-            if (alermFlag){
-                tvPressValue.setText("");
-            }else{
-                tvPressValue.setText(stringPressTemp+"MPa");
-                tvPressValue.setTextColor(0xDFFFFF00);
-                if (!muteFlag){
-                    playSounds(2,1);
-                }
-            }
-        }
-
-        */
     }
 
     private void playSounds(int sound, int number){

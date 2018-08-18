@@ -29,12 +29,10 @@ public class ModbusSlave extends Thread{
 
     public static int temperature = 250;
     public static int humidity = 500;
-    public static int pressure = 0;
+    public static int pressure = 833;
 
 
     private boolean getDataFlag =false;
-   // private int pressureUpperLimit = 900;
-  //  private int pressureLowerLimit =200;
 
     private int overPressure = 0;
     private int underPressure = 0;

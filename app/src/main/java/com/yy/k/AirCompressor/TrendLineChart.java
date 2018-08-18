@@ -89,7 +89,7 @@ public class TrendLineChart extends Activity{
 
         tempArray[29] = (float) (temp/10.0);
         humiArray[29] = (float) (humi/10.0);
-        pressArray[29] = (float) (press/10.0);
+        pressArray[29] = (float) (press*0.3-250);   //0-1000转换成-250 -- 50
 
 
         if (entriesTemp != null){
@@ -173,8 +173,8 @@ public class TrendLineChart extends Activity{
 
         rightAxis.setTextSize(12f);
         rightAxis.setAxisLineWidth(2);
-        rightAxis.setAxisMaximum(50);
-        rightAxis.setAxisMinimum(-250);
+        rightAxis.setAxisMaximum(100);
+        rightAxis.setAxisMinimum(-300);
         //     rightAxis.setDrawGridLines(false);
 
 
