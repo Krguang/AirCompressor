@@ -221,9 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 listData.add("恢复正常");
             }
 
-
             writeDataToShared();
-
 
         }
 

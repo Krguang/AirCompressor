@@ -56,6 +56,13 @@ public class AlarmRecord extends Activity {
         listTime.clear();
 
         int size = sharedPreferencesAlarmRecord.getInt("listTime_size",0);
+
+        if (size > 10000){      //报警记录大于10000条，自动清空
+
+            alarmClear();
+
+        }
+
         for (int i = 0;i<size;i++){
 
             listTime.add(sharedPreferencesAlarmRecord.getString("listTime_"+i,null));
@@ -70,6 +77,12 @@ public class AlarmRecord extends Activity {
 
     public void bt_alarm_clean(View view) {
 
+        alarmClear();
+    }
+
+
+    private void alarmClear(){
+
         editorAlarmRecord.clear();          //清空sharedPreferences
         editorAlarmRecord.apply();
 
@@ -78,7 +91,10 @@ public class AlarmRecord extends Activity {
 
         adapter=new MyAdapter();
         listView.setAdapter(adapter);
+
     }
+
+
 
     class MyAdapter extends BaseAdapter {
 
