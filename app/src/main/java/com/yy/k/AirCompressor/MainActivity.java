@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sharedParameterSet;
     SharedPreferences sharedPreferencesAlarmRecord;
+    SharedPreferences sharedPreferencesPastRecord;
 
     private boolean alermFlag =false;
 
@@ -67,9 +68,21 @@ public class MainActivity extends AppCompatActivity {
     private  List<String> listTime=new ArrayList<>();
     private  List<String> listData=new ArrayList<>();
 
+    private  List<String> listPastTime=new ArrayList<>();
+    private  List<String> listPastTemp=new ArrayList<>();
+    private  List<String> listPastHumi=new ArrayList<>();
+    private  List<String> listPastPress=new ArrayList<>();
+
     SimpleDateFormat simpleDateFormat;
 
     SharedPreferences.Editor editorAlarmRecord;
+    SharedPreferences.Editor editorPastRecord;
+
+    private int sendCount;
+
+    String stringTempTemp;
+    String stringHumiTemp;
+    String stringPressTemp;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -82,11 +95,12 @@ public class MainActivity extends AppCompatActivity {
 
         sharedParameterSet = this.getSharedPreferences("parameterSet",this.MODE_WORLD_WRITEABLE);
         sharedPreferencesAlarmRecord = this.getSharedPreferences("PreferencesAlarmRecord",this.MODE_WORLD_WRITEABLE);
-        editorAlarmRecord = sharedPreferencesAlarmRecord.edit();
+        sharedPreferencesPastRecord = this.getSharedPreferences("PreferencesPastRecord",this.MODE_WORLD_WRITEABLE);
 
+        editorAlarmRecord = sharedPreferencesAlarmRecord.edit();
+        editorPastRecord = sharedPreferencesPastRecord.edit();
 
         simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
-
 
         sp = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
         spMap = new HashMap<Integer,Integer>();
@@ -142,6 +156,13 @@ public class MainActivity extends AppCompatActivity {
                         dataDispaly();
                         setBt_connectStatus();
                         createAlarmData();
+
+                        sendCount++;
+                        if (sendCount >= 2){
+                            sendCount = 0;
+                            createPastData();
+                        }
+
                     }
                 });
             }
@@ -162,6 +183,28 @@ public class MainActivity extends AppCompatActivity {
         timer1.schedule(task1, 1000, 1000);
         timer2.schedule(task2, 1000, 10000);
     }
+
+
+    private void createPastData(){
+
+        Date date = new Date(System.currentTimeMillis());
+
+        listPastTime.add(simpleDateFormat.format(date));
+        listPastTemp.add(stringTempTemp);
+        listPastHumi.add(stringHumiTemp);
+        listPastPress.add(stringPressTemp);
+
+        editorPastRecord.putInt("listPastTime_size",listPastTime.size());
+        for (int i=0;i<listPastTime.size();i++){
+
+            editorPastRecord.putString("listPastTime_"+i,listPastTime.get(i));
+            editorPastRecord.putString("listPastTemp_"+i,listPastTemp.get(i));
+            editorPastRecord.putString("listPastHumi_"+i,listPastHumi.get(i));
+            editorPastRecord.putString("listPastPress_"+i,listPastPress.get(i));
+        }
+        editorPastRecord.apply();
+    }
+
 
     @Override
     protected void onDestroy() {       // activity被销毁时关闭串口接收线程和串口
@@ -186,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void writeDataToShared(){
+    private void writeDataToShared(){               //把数据写入文件
 
         editorAlarmRecord.putInt("listTime_size",listTime.size());
 
@@ -259,13 +302,14 @@ public class MainActivity extends AppCompatActivity {
         double doubleHumiTemp = getHumiFromModbus/10.0;
         double doublePressTemp = getPressFromModbus*0.3 - 250.0;
 
-        String stringTempTemp = myformat.format(doubleTempTemp);
-        String stringHumiTemp = myformat.format(doubleHumiTemp);
-        String stringPressTemp = myformat.format(doublePressTemp);
+        stringTempTemp = myformat.format(doubleTempTemp);
+        stringHumiTemp = myformat.format(doubleHumiTemp);
+        stringPressTemp = myformat.format(doublePressTemp);
 
         tvTempValue.setText(stringTempTemp+"℃");
         tvHumiValue.setText(stringHumiTemp+"%H");
         tvPressValue.setText(stringPressTemp+"Pa");
+
         tvTempValue.setTextColor(0xdfffffff);
         tvHumiValue.setTextColor(0xdfffffff);
         tvPressValue.setTextColor(0xdfffffff);
@@ -341,5 +385,15 @@ public class MainActivity extends AppCompatActivity {
 
         intent.setClass(this,TrendLineChart.class);
         startActivity(intent);
+    }
+
+    public void bt_past_record(View view) {
+
+        intent.setClass(this,PastRecord.class);
+        startActivity(intent);
+
+    }
+
+    public void bt_system_set(View view) {
     }
 }

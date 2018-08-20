@@ -58,9 +58,7 @@ public class AlarmRecord extends Activity {
         int size = sharedPreferencesAlarmRecord.getInt("listTime_size",0);
 
         if (size > 10000){      //报警记录大于10000条，自动清空
-
             alarmClear();
-
         }
 
         for (int i = 0;i<size;i++){
@@ -93,7 +91,6 @@ public class AlarmRecord extends Activity {
         listView.setAdapter(adapter);
 
     }
-
 
 
     class MyAdapter extends BaseAdapter {
