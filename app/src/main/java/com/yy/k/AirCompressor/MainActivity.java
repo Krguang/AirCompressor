@@ -359,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
     }
 
     private void playSounds(int sound, int number){
@@ -411,5 +412,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void bt_system_set(View view) {
+
+        intent.setClass(this,SystemSet.class);
+        startActivity(intent);
+
     }
 }

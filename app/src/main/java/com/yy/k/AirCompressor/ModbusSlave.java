@@ -41,6 +41,18 @@ public class ModbusSlave extends Thread{
         com2.Close();
     }
 
+
+    public int kongYaJiYunXing;
+    public int zhenKongBengYunXing1;
+    public int zhenKongBengYunXing2;
+    public int zhenKongBengYunXing3;
+
+    public int kongYaJiGuZhang;
+    public int zhenKongBengGuZhang1;
+    public int zhenKongBengGuZhang2;
+    public int zhenKongBengGuZhang3;
+
+
     @Override
     /**
      * 循环读取串口数据，rxFlag为true时处理数据
@@ -252,6 +264,18 @@ public class ModbusSlave extends Thread{
         pressure = localArray[8];
         overPressure = (localArray[15]>>13)&1;
         underPressure = (localArray[15]>>12)&1;
+
+        kongYaJiYunXing = localArray[10]&1;
+        zhenKongBengYunXing1 = (localArray[10]>>1)&1;
+        zhenKongBengYunXing2 = (localArray[10]>>2)&1;
+        zhenKongBengYunXing3 = (localArray[10]>>3)&1;
+
+        kongYaJiGuZhang = localArray[11]&1;
+        zhenKongBengGuZhang1 = (localArray[11]>>1)&1;
+        zhenKongBengGuZhang2 = (localArray[11]>>2)&1;
+        zhenKongBengGuZhang3 = (localArray[11]>>3)&1;
+
+
     }
 
     public void setSLAV_addr(int SLAV_addr) {

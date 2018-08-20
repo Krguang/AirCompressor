@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="unitSet">
+        <item>负压控制柜</item>
+        <item>空压机房自控柜</item>
+        <item>牙科抽吸机自控柜</item>
+        <item>牙科空压机房自控柜</item>
+    </string-array>
+
+</resources>
