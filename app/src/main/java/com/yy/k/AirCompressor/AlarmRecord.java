@@ -81,6 +81,10 @@ public class AlarmRecord extends Activity {
 
     private void alarmClear(){
 
+
+        MainActivity.listTime.clear();
+        MainActivity.listData.clear();
+
         editorAlarmRecord.clear();          //清空sharedPreferences
         editorAlarmRecord.apply();
 

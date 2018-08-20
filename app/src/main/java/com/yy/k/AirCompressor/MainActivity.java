@@ -65,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
     private int underPressureTemp = 0;
 
 
-    private  List<String> listTime=new ArrayList<>();
-    private  List<String> listData=new ArrayList<>();
+    public static   List<String> listTime=new ArrayList<>();
+    public static    List<String> listData=new ArrayList<>();
 
-    private  List<String> listPastTime=new ArrayList<>();
-    private  List<String> listPastTemp=new ArrayList<>();
-    private  List<String> listPastHumi=new ArrayList<>();
-    private  List<String> listPastPress=new ArrayList<>();
+    public static    List<String> listPastTime=new ArrayList<>();
+    public static    List<String> listPastTemp=new ArrayList<>();
+    public static    List<String> listPastHumi=new ArrayList<>();
+    public static    List<String> listPastPress=new ArrayList<>();
 
     SimpleDateFormat simpleDateFormat;
 

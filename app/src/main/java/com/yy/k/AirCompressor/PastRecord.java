@@ -63,6 +63,11 @@ public class PastRecord extends Activity {
 
     private void alarmClear(){
 
+        MainActivity.listPastTime.clear();
+        MainActivity.listPastTemp.clear();
+        MainActivity.listPastHumi.clear();
+        MainActivity.listPastPress.clear();
+
         editorPastRecord.clear();          //清空sharedPreferences
         editorPastRecord.apply();
 
