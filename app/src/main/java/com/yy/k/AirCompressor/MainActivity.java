@@ -194,6 +194,15 @@ public class MainActivity extends AppCompatActivity {
         listPastHumi.add(stringHumiTemp);
         listPastPress.add(stringPressTemp);
 
+
+        if (listPastTime.size() > 10000){
+
+            listPastTime.clear();
+            listPastTemp.clear();
+            listPastHumi.clear();
+            listPastPress.clear();
+        }
+
         editorPastRecord.putInt("listPastTime_size",listPastTime.size());
         for (int i=0;i<listPastTime.size();i++){
 
@@ -230,6 +239,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void writeDataToShared(){               //把数据写入文件
+
+
+        if (listTime.size() > 10000){
+
+            listTime.clear();
+            listData.clear();
+        }
 
         editorAlarmRecord.putInt("listTime_size",listTime.size());
 

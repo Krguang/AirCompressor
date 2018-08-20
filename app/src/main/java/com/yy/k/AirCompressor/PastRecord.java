@@ -52,7 +52,6 @@ public class PastRecord extends Activity {
             listTemp.add(sharedPreferencesPastRecord.getString("listPastTemp_"+i,null));
             listHumi.add(sharedPreferencesPastRecord.getString("listPastHumi_"+i,null));
             listPress.add(sharedPreferencesPastRecord.getString("listPastPress_"+i,null));
-
         }
 
         listView = findViewById(R.id.lv_past_record);
@@ -61,7 +60,7 @@ public class PastRecord extends Activity {
     }
 
 
-    private void alarmClear(){
+    private void pastClear(){
 
         MainActivity.listPastTime.clear();
         MainActivity.listPastTemp.clear();
@@ -82,7 +81,7 @@ public class PastRecord extends Activity {
 
     public void bt_past_clean(View view) {
 
-        alarmClear();
+        pastClear();
     }
 
 
