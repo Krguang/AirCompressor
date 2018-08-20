@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                         createAlarmData();
 
                         sendCount++;
-                        if (sendCount >= 2){
+                        if (sendCount >= 60){
                             sendCount = 0;
                             createPastData();
                         }
