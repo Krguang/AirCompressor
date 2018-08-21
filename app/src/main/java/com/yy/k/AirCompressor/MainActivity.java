@@ -19,13 +19,17 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static android.content.ContentValues.TAG;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -82,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
     private int beng1ErrorTemp;
     private int beng2ErrorTemp;
     private int beng3ErrorTemp;
+
+    private int pressUpperLimit;
+    private int pressLowLimit;
+
 
     public static    List<String> listTime=new ArrayList<>();
     public static    List<String> listData=new ArrayList<>();
@@ -216,6 +224,25 @@ public class MainActivity extends AppCompatActivity {
         timer2.schedule(task2, 1000, 10000);
     }
 
+
+    @Override
+    protected void onPostResume() { //返回主界面时需要处理的程序
+        super.onPostResume();
+
+        pressUpperLimit = sharedPreferencesSystemSet.getInt("压差上限",500);
+        pressLowLimit = sharedPreferencesSystemSet.getInt("压差下限",-500);
+
+        int[] pressLimitTemp = new int[11];
+        for (int i=0;i<11;i++){
+            pressLimitTemp[i] = pressLowLimit + (pressUpperLimit-pressLowLimit)/10*i;
+        }
+
+
+        String[] pressFixedLevel={pressLimitTemp[0]+" pa",pressLimitTemp[1]+" pa",pressLimitTemp[2]+" pa",pressLimitTemp[3]+" pa",pressLimitTemp[4]+" pa",pressLimitTemp[5]+" pa",pressLimitTemp[6]+" pa",pressLimitTemp[7]+" pa",pressLimitTemp[8]+" pa",pressLimitTemp[9]+" pa",pressLimitTemp[10]+" pa"};
+        pressDisplay.setMark(" 当前压力");
+        pressDisplay.setSpeedUint("pa");
+        pressDisplay.setFixedLevel(pressFixedLevel);
+    }
 
     private void createPastData(){
 
@@ -416,9 +443,12 @@ public class MainActivity extends AppCompatActivity {
     private void dataDispaly(){         //数据处理和显示
 
 
+
+
+
         int uintNum = sharedPreferencesSystemSet.getInt("机组选择",0);
 
-        switch(uintNum){
+        switch(uintNum){       //根据选择的机组显示对应的空压机或真空泵，并处理相应的运行及报警信号。
 
             case 0:
 
@@ -544,14 +574,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         int getTempFromModbus = ModbusSlave.temperature;
         int getHumiFromModbus = ModbusSlave.humidity;
         int getPressFromModbus = ModbusSlave.pressure;
 
         double doubleTempTemp = getTempFromModbus/10.0;
         double doubleHumiTemp = getHumiFromModbus/10.0;
-        double doublePressTemp = getPressFromModbus*0.3 - 250.0;
+        double doublePressTemp = getPressFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
 
         stringTempTemp = myformat.format(doubleTempTemp);
         stringHumiTemp = myformat.format(doubleHumiTemp);
@@ -606,10 +635,12 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void pressDisplayInit() {
+        /*
         String[] pressFixedLevel={"-250 pa","-220 pa","-190 pa","-160 pa","-130 pa","-100 pa","-70 pa","-40 pa","-10 pa","20 pa","50 pa"};
         pressDisplay.setMark(" 当前压力");
         pressDisplay.setSpeedUint("pa");
         pressDisplay.setFixedLevel(pressFixedLevel);
+        */
     }
 
     private  void tempDisplayInit(){

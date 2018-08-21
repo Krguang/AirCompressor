@@ -1,9 +1,11 @@
 package com.yy.k.AirCompressor;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Window;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static android.content.ContentValues.TAG;
+
 
 public class TrendLineChart extends Activity{
 
@@ -37,6 +41,11 @@ public class TrendLineChart extends Activity{
     float[] humiArray = new float[30];
     float[] pressArray = new float[30];
 
+    SharedPreferences sharedPreferencesSystemSet;
+    private int pressUpperLimit;
+    private int pressLowLimit;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -44,9 +53,17 @@ public class TrendLineChart extends Activity{
 
         setContentView(R.layout.line_chart);
 
+        sharedPreferencesSystemSet = this.getSharedPreferences("PreferencesSystemSet",this.MODE_WORLD_WRITEABLE);
+
+        pressUpperLimit = sharedPreferencesSystemSet.getInt("压差上限",500);
+        pressLowLimit = sharedPreferencesSystemSet.getInt("压差下限",-500);
+
         lineChartInit();
 
         timer1s.schedule(taskPoll,1000,1000);//5ms后开始，每5ms轮询一次
+
+
+
 
     }
 
@@ -79,7 +96,7 @@ public class TrendLineChart extends Activity{
 
         tempArray[29] = (float) (temp/10.0);        //读取的实时数据填补到最后一位
         humiArray[29] = (float) (humi/10.0);
-        pressArray[29] = (float) (press*0.3-250);   //0-1000转换成-250 -- 50
+        pressArray[29] = (float) (press*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit);   //0-1000转换成-250 -- 50
 
 
         if (entriesTemp != null){                   //清空上一次的List
@@ -143,7 +160,7 @@ public class TrendLineChart extends Activity{
         lineChart = findViewById(R.id.linechart);
 
         description = new Description();    //设置描述信息
-        description.setText("温度/湿度/压差趋势");
+        description.setText("");
         description.setTextSize(12);
 
 
@@ -159,9 +176,8 @@ public class TrendLineChart extends Activity{
 
         rightAxis.setTextSize(12f);
         rightAxis.setAxisLineWidth(2);
-        rightAxis.setAxisMaximum(100);
-        rightAxis.setAxisMinimum(-300);
-        //     rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMaximum(pressUpperLimit);
+        rightAxis.setAxisMinimum(pressLowLimit);
 
         XAxis xAxis = lineChart.getXAxis();             //X轴属性
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
