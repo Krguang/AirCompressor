@@ -42,15 +42,15 @@ public class ModbusSlave extends Thread{
     }
 
 
-    public int kongYaJiYunXing;
-    public int zhenKongBengYunXing1;
-    public int zhenKongBengYunXing2;
-    public int zhenKongBengYunXing3;
+    public static int kongYaJiYunXing;
+    public static int zhenKongBengYunXing1;
+    public static int zhenKongBengYunXing2;
+    public static int zhenKongBengYunXing3;
 
-    public int kongYaJiGuZhang;
-    public int zhenKongBengGuZhang1;
-    public int zhenKongBengGuZhang2;
-    public int zhenKongBengGuZhang3;
+    public static int kongYaJiGuZhang;
+    public static int zhenKongBengGuZhang1;
+    public static int zhenKongBengGuZhang2;
+    public static int zhenKongBengGuZhang3;
 
 
     @Override

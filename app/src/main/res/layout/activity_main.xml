@@ -9,6 +9,7 @@
 
 
     <TextView
+        android:id="@+id/uint_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -296,7 +297,7 @@
         app:layout_constraintStart_toEndOf="@+id/button5" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/beng1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -316,29 +317,29 @@
         app:layout_constraintVertical_bias="0.805" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/beng2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="真空泵2"
         android:textSize="30dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintEnd_toEndOf="@+id/beng1"
+        app:layout_constraintTop_toBottomOf="@+id/beng1" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/beng3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="真空泵3"
         android:textSize="30dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toEndOf="@+id/beng2"
+        app:layout_constraintTop_toBottomOf="@+id/beng2" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/beng1run"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginBottom="8dp"
@@ -356,71 +357,66 @@
         app:layout_constraintVertical_bias="0.817" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/beng1error"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginLeft="64dp"
         android:layout_marginStart="64dp"
         android:background="@drawable/init_ing"
-        app:layout_constraintBottom_toBottomOf="@+id/button7"
-        app:layout_constraintStart_toEndOf="@+id/button7" />
+        app:layout_constraintBottom_toBottomOf="@+id/beng1run"
+        app:layout_constraintStart_toEndOf="@+id/beng1run" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/beng2run"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/init_ing"
-        app:layout_constraintEnd_toEndOf="@+id/button7"
-        app:layout_constraintTop_toBottomOf="@+id/button7" />
+        app:layout_constraintEnd_toEndOf="@+id/beng1run"
+        app:layout_constraintTop_toBottomOf="@+id/beng1run" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/beng2error"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/init_ing"
-        app:layout_constraintEnd_toEndOf="@+id/button8"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
+        app:layout_constraintEnd_toEndOf="@+id/beng1error"
+        app:layout_constraintTop_toBottomOf="@+id/beng1error" />
 
     <Button
-        android:id="@+id/button11"
+        android:id="@+id/beng3run"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/init_ing"
-        app:layout_constraintEnd_toEndOf="@+id/button9"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        app:layout_constraintEnd_toEndOf="@+id/beng2run"
+        app:layout_constraintTop_toBottomOf="@+id/beng2run" />
 
     <Button
-        android:id="@+id/button12"
+        android:id="@+id/beng3error"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@drawable/init_ing"
-        app:layout_constraintEnd_toEndOf="@+id/button10"
-        app:layout_constraintTop_toBottomOf="@+id/button10" />
+        app:layout_constraintEnd_toEndOf="@+id/beng2error"
+        app:layout_constraintTop_toBottomOf="@+id/beng2error" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="运行指示"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        app:layout_constraintEnd_toEndOf="@+id/button11"
-        app:layout_constraintStart_toStartOf="@+id/button11"
-        app:layout_constraintTop_toBottomOf="@+id/button11" />
+        app:layout_constraintBottom_toTopOf="@+id/beng1run"
+        app:layout_constraintEnd_toEndOf="@+id/beng1run"
+        app:layout_constraintStart_toStartOf="@+id/beng1run" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="故障指示"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        app:layout_constraintEnd_toEndOf="@+id/button12"
-        app:layout_constraintHorizontal_bias="0.589"
-        app:layout_constraintStart_toStartOf="@+id/button12"
-        app:layout_constraintTop_toBottomOf="@+id/button12" />
+        app:layout_constraintBottom_toTopOf="@+id/beng1error"
+        app:layout_constraintEnd_toEndOf="@+id/beng1error"
+        app:layout_constraintStart_toStartOf="@+id/beng1error" />
 
 
 </android.support.constraint.ConstraintLayout>

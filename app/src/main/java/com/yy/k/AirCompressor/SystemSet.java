@@ -40,8 +40,8 @@ public class SystemSet extends Activity {
 
 
         sp_systemSet.setSelection(sharedPreferencesSystemSet.getInt("机组选择",0),true);
-        pressUpper.setText(sharedPreferencesSystemSet.getInt("压差上限",500));
-        pressLow.setText(sharedPreferencesSystemSet.getInt("压差下限",-500));
+        pressUpper.setText(sharedPreferencesSystemSet.getInt("压差上限",500)+"");
+        pressLow.setText(sharedPreferencesSystemSet.getInt("压差下限",-500)+"");
 
 
         sp_systemSet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

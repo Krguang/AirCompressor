@@ -40,6 +40,19 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTempValue;
     TextView tvHumiValue;
     TextView tvPressValue;
+    TextView tvUintTitle;
+    TextView tvBeng1;
+    TextView tvBeng2;
+    TextView tvBeng3;
+
+    Button bt_beng1run;
+    Button bt_beng2run;
+    Button bt_beng3run;
+
+    Button bt_beng1error;
+    Button bt_beng2error;
+    Button bt_beng3error;
+
     Button bt_mute;
     Button bt_connectStatus;
     Intent intent = new Intent();
@@ -58,14 +71,19 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedParameterSet;
     SharedPreferences sharedPreferencesAlarmRecord;
     SharedPreferences sharedPreferencesPastRecord;
+    SharedPreferences sharedPreferencesSystemSet;
 
     private boolean alermFlag =false;
 
     private int overPressureTemp = 0;
     private int underPressureTemp = 0;
 
+    private int kongYaJiErrorTemp;
+    private int beng1ErrorTemp;
+    private int beng2ErrorTemp;
+    private int beng3ErrorTemp;
 
-    public static   List<String> listTime=new ArrayList<>();
+    public static    List<String> listTime=new ArrayList<>();
     public static    List<String> listData=new ArrayList<>();
 
     public static    List<String> listPastTime=new ArrayList<>();
@@ -96,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         sharedParameterSet = this.getSharedPreferences("parameterSet",this.MODE_WORLD_WRITEABLE);
         sharedPreferencesAlarmRecord = this.getSharedPreferences("PreferencesAlarmRecord",this.MODE_WORLD_WRITEABLE);
         sharedPreferencesPastRecord = this.getSharedPreferences("PreferencesPastRecord",this.MODE_WORLD_WRITEABLE);
+        sharedPreferencesSystemSet = this.getSharedPreferences("PreferencesSystemSet",this.MODE_WORLD_WRITEABLE);
 
         editorAlarmRecord = sharedPreferencesAlarmRecord.edit();
         editorPastRecord = sharedPreferencesPastRecord.edit();
@@ -117,6 +136,19 @@ public class MainActivity extends AppCompatActivity {
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
+        tvUintTitle = findViewById(R.id.uint_title);
+        tvBeng1 = findViewById(R.id.beng1);
+        tvBeng2 = findViewById(R.id.beng2);
+        tvBeng3 = findViewById(R.id.beng3);
+
+        bt_beng1run = findViewById(R.id.beng1run);
+        bt_beng2run = findViewById(R.id.beng2run);
+        bt_beng3run = findViewById(R.id.beng3run);
+
+        bt_beng1error = findViewById(R.id.beng1error);
+        bt_beng2error = findViewById(R.id.beng2error);
+        bt_beng3error = findViewById(R.id.beng3error);
+
         tempDisplayInit();
         humiDisplayInit();
         pressDisplayInit();
@@ -277,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 Date date = new Date(System.currentTimeMillis());
 
                 listTime.add(simpleDateFormat.format(date));
-                listData.add("恢复正常");
+                listData.add("压差恢复正常");
             }
 
             writeDataToShared();
@@ -300,15 +332,218 @@ public class MainActivity extends AppCompatActivity {
 
                 Date date = new Date(System.currentTimeMillis());
                 listTime.add(simpleDateFormat.format(date));
-                listData.add("恢复正常");
+                listData.add("压差恢复正常");
             }
 
             writeDataToShared();
 
         }
+
+        if (kongYaJiErrorTemp != ModbusSlave.kongYaJiGuZhang){
+
+            kongYaJiErrorTemp = ModbusSlave.kongYaJiGuZhang;
+
+            if (1 == kongYaJiErrorTemp){
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("空压机故障");
+            }
+            if (0 == kongYaJiErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("空压机恢复正常");
+            }
+            writeDataToShared();
+        }
+
+        if (beng1ErrorTemp != ModbusSlave.zhenKongBengGuZhang1){
+
+            beng1ErrorTemp = ModbusSlave.zhenKongBengGuZhang1;
+            if (1 == beng1ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵1故障");
+            }
+            if (0 == beng1ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵1恢复正常");
+            }
+            writeDataToShared();
+        }
+
+        if (beng2ErrorTemp != ModbusSlave.zhenKongBengGuZhang2){
+
+            beng2ErrorTemp = ModbusSlave.zhenKongBengGuZhang2;
+            if (1 == beng2ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵2故障");
+            }
+            if (0 == beng2ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵2恢复正常");
+            }
+            writeDataToShared();
+        }
+
+        if (beng3ErrorTemp != ModbusSlave.zhenKongBengGuZhang3){
+
+            beng3ErrorTemp = ModbusSlave.zhenKongBengGuZhang3;
+            if (1 == beng3ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵3故障");
+            }
+            if (0 == beng3ErrorTemp){
+
+                Date date = new Date(System.currentTimeMillis());
+                listTime.add(simpleDateFormat.format(date));
+                listData.add("真空泵3恢复正常");
+            }
+            writeDataToShared();
+        }
+
     }
 
     private void dataDispaly(){         //数据处理和显示
+
+
+        int uintNum = sharedPreferencesSystemSet.getInt("机组选择",0);
+
+        switch(uintNum){
+
+            case 0:
+
+                tvUintTitle.setText("负压控制监控系统");
+                tvBeng1.setText("真空泵1");
+                tvBeng2.setText("真空泵2");
+                tvBeng3.setText("真空泵3");
+
+                if (ModbusSlave.zhenKongBengYunXing1 == 1){
+                    bt_beng1run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng1run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.zhenKongBengGuZhang1 == 1){
+                    bt_beng1error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng1error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                if (ModbusSlave.zhenKongBengYunXing2 == 1){
+                    bt_beng2run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng2run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.zhenKongBengGuZhang2 == 1){
+                    bt_beng2error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng2error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                if (ModbusSlave.zhenKongBengYunXing3 == 1){
+                    bt_beng3run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng3run.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                if (ModbusSlave.zhenKongBengGuZhang3 == 1){
+                    bt_beng3error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng3error.setBackgroundResource(R.drawable.init_ing);
+                }
+                break;
+
+            case 1:
+
+                tvUintTitle.setText("空压机房监控系统");
+                tvBeng1.setText("空压机");
+                tvBeng2.setText("");
+                tvBeng3.setText("");
+                if (ModbusSlave.kongYaJiYunXing == 1){
+                    bt_beng1run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng1run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.kongYaJiGuZhang == 1){
+                    bt_beng1error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng1error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                bt_beng2run.setBackgroundResource(R.drawable.nothing);
+                bt_beng3run.setBackgroundResource(R.drawable.nothing);
+                bt_beng2error.setBackgroundResource(R.drawable.nothing);
+                bt_beng3error.setBackgroundResource(R.drawable.nothing);
+                break;
+
+            case 2:
+
+                tvUintTitle.setText("牙科抽吸机监控系统");
+                tvBeng1.setText("真空泵1");
+                tvBeng2.setText("真空泵2");
+                tvBeng3.setText("");
+                if (ModbusSlave.zhenKongBengYunXing1 == 1){
+                    bt_beng1run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng1run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.zhenKongBengGuZhang1 == 1){
+                    bt_beng1error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng1error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                if (ModbusSlave.zhenKongBengYunXing2 == 1){
+                    bt_beng2run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng2run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.zhenKongBengGuZhang2 == 1){
+                    bt_beng2error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng2error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                bt_beng3run.setBackgroundResource(R.drawable.nothing);
+                bt_beng3error.setBackgroundResource(R.drawable.nothing);
+
+                break;
+
+            case 3:
+
+                tvUintTitle.setText("牙科空压机房监控系统");
+                tvBeng1.setText("空压机");
+                tvBeng2.setText("");
+                tvBeng3.setText("");
+                if (ModbusSlave.kongYaJiYunXing == 1){
+                    bt_beng1run.setBackgroundResource(R.drawable.connected);
+                }else {
+                    bt_beng1run.setBackgroundResource(R.drawable.init_ing);
+                }
+                if (ModbusSlave.kongYaJiGuZhang == 1){
+                    bt_beng1error.setBackgroundResource(R.drawable.no_connect);
+                }else {
+                    bt_beng1error.setBackgroundResource(R.drawable.init_ing);
+                }
+
+                bt_beng2run.setBackgroundResource(R.drawable.nothing);
+                bt_beng3run.setBackgroundResource(R.drawable.nothing);
+                bt_beng2error.setBackgroundResource(R.drawable.nothing);
+                bt_beng3error.setBackgroundResource(R.drawable.nothing);
+                break;
+
+        }
+
+
 
         int getTempFromModbus = ModbusSlave.temperature;
         int getHumiFromModbus = ModbusSlave.humidity;

@@ -123,7 +123,7 @@ public class AlarmRecord extends Activity {
             tv_time.setText(listTime.get(i));
             tv_data.setText(listData.get(i));
 
-            if (listData.get(i).equals("超压")){
+            if (listData.get(i).equals("超压")||listData.get(i).equals("空压机故障")||listData.get(i).equals("真空泵1故障")||listData.get(i).equals("真空泵2故障")||listData.get(i).equals("真空泵3故障")){
                 tv_data.setTextColor(Color.RED);
             }
 
@@ -131,7 +131,7 @@ public class AlarmRecord extends Activity {
                 tv_data.setTextColor(0xffffff00);
             }
 
-            if (listData.get(i).equals("恢复正常")){
+            if (listData.get(i).equals("压差恢复正常")||listData.get(i).equals("空压机恢复正常")||listData.get(i).equals("真空泵1恢复正常")||listData.get(i).equals("真空泵2恢复正常")||listData.get(i).equals("真空泵3恢复正常")){
                 tv_data.setTextColor(0xff00cc00);
             }
 
