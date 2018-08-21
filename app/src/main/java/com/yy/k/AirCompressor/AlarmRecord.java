@@ -66,7 +66,6 @@ public class AlarmRecord extends Activity {
         listView = findViewById(R.id.lv_alarm_record);
         adapter=new MyAdapter();
         listView.setAdapter(adapter);
-
     }
 
     public void bt_alarm_clean(View view) {

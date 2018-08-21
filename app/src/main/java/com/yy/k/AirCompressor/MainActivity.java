@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     private int pressUpperLimit;
     private int pressLowLimit;
 
-
     public static    List<String> listTime=new ArrayList<>();
     public static    List<String> listData=new ArrayList<>();
 
@@ -198,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                         createAlarmData();
 
                         sendCount++;
-                        if (sendCount >= 60){
+                        if (sendCount >= 2){
                             sendCount = 0;
                             createPastData();
                         }
@@ -222,8 +221,32 @@ public class MainActivity extends AppCompatActivity {
 
         timer1.schedule(task1, 1000, 1000);
         timer2.schedule(task2, 1000, 10000);
+
+        loadShared();
+
     }
 
+
+    private void loadShared(){      //开机时加载shared文件里的数据，防止被覆盖掉
+
+        int size = sharedPreferencesAlarmRecord.getInt("listTime_size",0);
+
+        for (int i = 0;i<size;i++){
+
+            listTime.add(sharedPreferencesAlarmRecord.getString("listTime_"+i,null));
+            listData.add(sharedPreferencesAlarmRecord.getString("listData_"+i,null));
+        }
+
+        size = sharedPreferencesPastRecord.getInt("listPastTime_size",0);
+
+        for (int i = 0;i<size;i++){
+
+            listPastTime.add(sharedPreferencesPastRecord.getString("listPastTime_"+i,null));
+            listPastTemp.add(sharedPreferencesPastRecord.getString("listPastTemp_"+i,null));
+            listPastHumi.add(sharedPreferencesPastRecord.getString("listPastHumi_"+i,null));
+            listPastPress.add(sharedPreferencesPastRecord.getString("listPastPress_"+i,null));
+        }
+    }
 
     @Override
     protected void onPostResume() { //返回主界面时需要处理的程序
@@ -253,6 +276,8 @@ public class MainActivity extends AppCompatActivity {
         listPastHumi.add(stringHumiTemp);
         listPastPress.add(stringPressTemp);
 
+
+        Log.d(TAG, "listPastTime.size(): "+listPastTime.size());
 
         if (listPastTime.size() > 10000){
 
@@ -581,6 +606,7 @@ public class MainActivity extends AppCompatActivity {
         double doubleTempTemp = getTempFromModbus/10.0;
         double doubleHumiTemp = getHumiFromModbus/10.0;
         double doublePressTemp = getPressFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
+
 
         stringTempTemp = myformat.format(doubleTempTemp);
         stringHumiTemp = myformat.format(doubleHumiTemp);
