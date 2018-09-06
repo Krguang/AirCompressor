@@ -74,6 +74,8 @@ public class ModbusSlave extends Thread{
 
             if (rxFlag){
                 rxFlag=false;
+
+
                 byte[] rxTempByteArray = new byte[rxTemp.size()];
                 int i=0;
                 Iterator<Byte> iterator = rxTemp.iterator();
@@ -265,12 +267,12 @@ public class ModbusSlave extends Thread{
         overPressure = (localArray[15]>>13)&1;
         underPressure = (localArray[15]>>12)&1;
 
-        kongYaJiYunXing = localArray[10]&1;
+        kongYaJiYunXing = (localArray[10]>>1)&1;
         zhenKongBengYunXing1 = (localArray[10]>>1)&1;
         zhenKongBengYunXing2 = (localArray[10]>>2)&1;
         zhenKongBengYunXing3 = (localArray[10]>>3)&1;
 
-        kongYaJiGuZhang = localArray[11]&1;
+        kongYaJiGuZhang = (localArray[11]>>1)&1;
         zhenKongBengGuZhang1 = (localArray[11]>>1)&1;
         zhenKongBengGuZhang2 = (localArray[11]>>2)&1;
         zhenKongBengGuZhang3 = (localArray[11]>>3)&1;
