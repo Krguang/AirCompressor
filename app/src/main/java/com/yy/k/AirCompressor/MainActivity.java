@@ -261,9 +261,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        String[] pressFixedLevel={pressLimitTemp[0]+" pa",pressLimitTemp[1]+" pa",pressLimitTemp[2]+" pa",pressLimitTemp[3]+" pa",pressLimitTemp[4]+" pa",pressLimitTemp[5]+" pa",pressLimitTemp[6]+" pa",pressLimitTemp[7]+" pa",pressLimitTemp[8]+" pa",pressLimitTemp[9]+" pa",pressLimitTemp[10]+" pa"};
+        String[] pressFixedLevel={pressLimitTemp[0]+"kpa",pressLimitTemp[1]+"kpa",pressLimitTemp[2]+"kpa",pressLimitTemp[3]+"kpa",pressLimitTemp[4]+"kpa",pressLimitTemp[5]+"kpa",pressLimitTemp[6]+"kpa",pressLimitTemp[7]+"kpa",pressLimitTemp[8]+"kpa",pressLimitTemp[9]+"kpa",pressLimitTemp[10]+"kpa"};
         pressDisplay.setMark(" 当前压力");
-        pressDisplay.setSpeedUint("pa");
+        pressDisplay.setSpeedUint("kpa");
         pressDisplay.setFixedLevel(pressFixedLevel);
     }
 
@@ -614,7 +614,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvTempValue.setText(stringTempTemp+"℃");
         tvHumiValue.setText(stringHumiTemp+"%H");
-        tvPressValue.setText(stringPressTemp+"Pa");
+        tvPressValue.setText(stringPressTemp+"KPa");
 
         tvTempValue.setTextColor(0xdfffffff);
         tvHumiValue.setTextColor(0xdfffffff);
@@ -629,7 +629,7 @@ public class MainActivity extends AppCompatActivity {
             if (alermFlag){
                 tvPressValue.setText("");
             }else{
-                tvPressValue.setText(stringPressTemp+"Pa");
+                tvPressValue.setText(stringPressTemp+"KPa");
                 tvPressValue.setTextColor(0xdfff0000);
 
                 if (!muteFlag){
@@ -642,7 +642,7 @@ public class MainActivity extends AppCompatActivity {
             if (alermFlag){
                 tvPressValue.setText("");
             }else{
-                tvPressValue.setText(stringPressTemp+"Pa");
+                tvPressValue.setText(stringPressTemp+"KPa");
                 tvPressValue.setTextColor(0xDFFFFF00);
                 if (!muteFlag){
                     playSounds(2,1);

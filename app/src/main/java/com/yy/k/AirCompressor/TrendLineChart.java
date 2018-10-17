@@ -137,7 +137,7 @@ public class TrendLineChart extends Activity{
 
 
         //再创建一个折线对象set1：
-        LineDataSet set2 = new LineDataSet(entriesPress,"压差(Pa)");
+        LineDataSet set2 = new LineDataSet(entriesPress,"压差(KPa)");
         set2.setColor(Color.BLACK);    //给线条设置颜色
         set2.setAxisDependency(YAxis.AxisDependency.RIGHT);                  //设置该折线的y值依赖右y轴 也可不设置 默认都依赖左y轴
         set2.setDrawValues(true);
