@@ -76,7 +76,7 @@
         android:id="@+id/tv_temp_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="88dp"
+        android:layout_marginLeft="60dp"
         android:text="00.0 ℃"
         android:textColor="#c0FFFFFF"
         android:textSize="80sp"
@@ -84,10 +84,11 @@
         app:layout_constraintLeft_toLeftOf="@+id/temp_display" />
 
     <TextView
+        android:id="@+id/tv_temp_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:text="当前温度"
+        android:layout_marginLeft="60dp"
+        android:text="真空泵1"
         android:textColor="#f0ffffff"
         android:textSize="45sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_temp_value"
@@ -97,7 +98,7 @@
         android:id="@+id/tv_humi_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="60dp"
         android:text="00.0 %RH"
         android:textColor="#c0FFFFFF"
         android:textSize="80sp"
@@ -105,10 +106,11 @@
         app:layout_constraintLeft_toLeftOf="@+id/humi_display" />
 
     <TextView
+        android:id="@+id/tv_humi_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="56dp"
-        android:text="当前湿度"
+        android:layout_marginLeft="60dp"
+        android:text="真空泵2"
         android:textColor="#f0ffffff"
         android:textSize="45sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_humi_value"
@@ -126,10 +128,11 @@
         app:layout_constraintLeft_toLeftOf="@+id/press_display" />
 
     <TextView
+        android:id="@+id/tv_press_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="56dp"
-        android:text="当前压强"
+        android:layout_marginLeft="60dp"
+        android:text="真空泵3"
         android:textColor="#f0ffffff"
         android:textSize="45sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_press_value"

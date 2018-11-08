@@ -27,8 +27,8 @@ public class ModbusSlave extends Thread{
 
     private int jiZuStartStop = 0;
 
-    public static int temperature = 250;
-    public static int humidity = 500;
+    public static int temperature = 0;
+    public static int humidity = 0;
     public static int pressure = 0;
 
 
@@ -276,8 +276,6 @@ public class ModbusSlave extends Thread{
         zhenKongBengGuZhang1 = (localArray[11]>>1)&1;
         zhenKongBengGuZhang2 = (localArray[11]>>2)&1;
         zhenKongBengGuZhang3 = (localArray[11]>>3)&1;
-
-
     }
 
     public void setSLAV_addr(int SLAV_addr) {

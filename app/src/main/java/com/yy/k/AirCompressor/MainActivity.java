@@ -41,9 +41,15 @@ public class MainActivity extends AppCompatActivity {
     DashBoardView tempDisplay;
     DashBoardView humiDisplay;
     DashBoardView pressDisplay;
+
     TextView tvTempValue;
     TextView tvHumiValue;
     TextView tvPressValue;
+
+    TextView tvTempName;
+    TextView tvHumiName;
+    TextView tvPressName;
+
     TextView tvUintTitle;
     TextView tvBeng1;
     TextView tvBeng2;
@@ -140,9 +146,15 @@ public class MainActivity extends AppCompatActivity {
         pressDisplay = findViewById(R.id.press_display);
         bt_mute = findViewById(R.id.mute);
         bt_connectStatus = findViewById(R.id.connect_status);
+
         tvTempValue = findViewById(R.id.tv_temp_value);
         tvHumiValue = findViewById(R.id.tv_humi_value);
         tvPressValue = findViewById(R.id.tv_press_value);
+
+        tvTempName = findViewById(R.id.tv_temp_name);
+        tvHumiName = findViewById(R.id.tv_humi_name);
+        tvPressName = findViewById(R.id.tv_press_name);
+
         tvUintTitle = findViewById(R.id.uint_title);
         tvBeng1 = findViewById(R.id.beng1);
         tvBeng2 = findViewById(R.id.beng2);
@@ -156,9 +168,11 @@ public class MainActivity extends AppCompatActivity {
         bt_beng2error = findViewById(R.id.beng2error);
         bt_beng3error = findViewById(R.id.beng3error);
 
-        tempDisplayInit();
-        humiDisplayInit();
-        pressDisplayInit();
+
+
+        //tempDisplayInit();
+      //  humiDisplayInit();
+      //  pressDisplayInit();
 
         bt_mute.setOnClickListener(new View.OnClickListener() {
 
@@ -260,11 +274,18 @@ public class MainActivity extends AppCompatActivity {
             pressLimitTemp[i] = pressLowLimit + (pressUpperLimit-pressLowLimit)/10*i;
         }
 
-
         String[] pressFixedLevel={pressLimitTemp[0]+"kpa",pressLimitTemp[1]+"kpa",pressLimitTemp[2]+"kpa",pressLimitTemp[3]+"kpa",pressLimitTemp[4]+"kpa",pressLimitTemp[5]+"kpa",pressLimitTemp[6]+"kpa",pressLimitTemp[7]+"kpa",pressLimitTemp[8]+"kpa",pressLimitTemp[9]+"kpa",pressLimitTemp[10]+"kpa"};
         pressDisplay.setMark(" 当前压力");
         pressDisplay.setSpeedUint("kpa");
         pressDisplay.setFixedLevel(pressFixedLevel);
+
+        tempDisplay.setMark(" 当前压力");
+        tempDisplay.setSpeedUint("kpa");
+        tempDisplay.setFixedLevel(pressFixedLevel);
+
+        humiDisplay.setMark(" 当前压力");
+        humiDisplay.setSpeedUint("kpa");
+        humiDisplay.setFixedLevel(pressFixedLevel);
     }
 
     private void createPastData(){
@@ -365,7 +386,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             writeDataToShared();
-
         }
 
 
@@ -467,20 +487,51 @@ public class MainActivity extends AppCompatActivity {
 
     private void dataDispaly(){         //数据处理和显示
 
+        int getTempFromModbus = ModbusSlave.temperature;
+        int getHumiFromModbus = ModbusSlave.humidity;
+        int getPressFromModbus = ModbusSlave.pressure;
+
+        double doubleTempTemp = getTempFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
+        double doubleHumiTemp = getHumiFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
+        double doublePressTemp = getPressFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
 
 
+        stringTempTemp = myformat.format(doubleTempTemp);
+        stringHumiTemp = myformat.format(doubleHumiTemp);
+        stringPressTemp = myformat.format(doublePressTemp);
 
+        tvTempValue.setText(stringTempTemp+"KPa");
+        tvHumiValue.setText(stringHumiTemp+"KPa");
+        tvPressValue.setText(stringPressTemp+"KPa");
+
+        tvTempValue.setTextColor(0xdfffffff);
+        tvHumiValue.setTextColor(0xdfffffff);
+        tvPressValue.setTextColor(0xdfffffff);
 
         int uintNum = sharedPreferencesSystemSet.getInt("机组选择",0);
-
         switch(uintNum){       //根据选择的机组显示对应的空压机或真空泵，并处理相应的运行及报警信号。
 
             case 0:
+
+                tvTempValue.setText(stringTempTemp+"KPa");
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvPressValue.setText(stringPressTemp+"KPa");
+
+                tvTempValue.setTextColor(0xdfffffff);
+                tvHumiValue.setTextColor(0xdfffffff);
+                tvPressValue.setTextColor(0xdfffffff);
 
                 tvUintTitle.setText("负压控制监控系统");
                 tvBeng1.setText("真空泵1");
                 tvBeng2.setText("真空泵2");
                 tvBeng3.setText("真空泵3");
+
+                tempDisplay.setAlpha(1);
+                pressDisplay.setAlpha(1);
+
+                tvTempName.setText("真空泵1");
+                tvHumiName.setText("真空泵2");
+                tvPressName.setText("真空泵3");
 
                 if (ModbusSlave.zhenKongBengYunXing1 == 1){
                     bt_beng1run.setBackgroundResource(R.drawable.connected);
@@ -519,6 +570,19 @@ public class MainActivity extends AppCompatActivity {
 
             case 1:
 
+                tvTempValue.setText("");
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvPressValue.setText("");
+
+                tvHumiValue.setTextColor(0xdfffffff);
+
+                tvTempName.setText("");
+                tvHumiName.setText("空压机");
+                tvPressName.setText("");
+
+                tempDisplay.setAlpha(0);
+                pressDisplay.setAlpha(0);
+
                 tvUintTitle.setText("空压机房监控系统");
                 tvBeng1.setText("空压机");
                 tvBeng2.setText("");
@@ -542,10 +606,26 @@ public class MainActivity extends AppCompatActivity {
 
             case 2:
 
+                tempDisplay.setAlpha(1);
+                pressDisplay.setAlpha(1);
+
+                tvTempValue.setText(stringTempTemp+"KPa");
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvPressValue.setText(stringPressTemp+"KPa");
+
+                tvTempValue.setTextColor(0xdfffffff);
+                tvHumiValue.setTextColor(0xdfffffff);
+                tvPressValue.setTextColor(0xdfffffff);
+
                 tvUintTitle.setText("牙科抽吸机监控系统");
                 tvBeng1.setText("真空泵1");
                 tvBeng2.setText("真空泵2");
                 tvBeng3.setText("");
+
+                tvTempName.setText("真空泵1");
+                tvHumiName.setText("真空泵2");
+                tvPressName.setText("真空泵3");
+
                 if (ModbusSlave.zhenKongBengYunXing1 == 1){
                     bt_beng1run.setBackgroundResource(R.drawable.connected);
                 }else {
@@ -575,10 +655,28 @@ public class MainActivity extends AppCompatActivity {
 
             case 3:
 
+
+                tvTempValue.setText("");
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvPressValue.setText("");
+
+                tvHumiValue.setTextColor(0xdfffffff);
+
+                tvTempName.setText("");
+                tvPressName.setText("");
+
+                tempDisplay.setAlpha(0);
+                pressDisplay.setAlpha(0);
+
                 tvUintTitle.setText("牙科空压机房监控系统");
                 tvBeng1.setText("空压机");
                 tvBeng2.setText("");
                 tvBeng3.setText("");
+
+                tvTempName.setText("");
+                tvHumiName.setText("空压机");
+                tvPressName.setText("");
+
                 if (ModbusSlave.kongYaJiYunXing == 1){
                     bt_beng1run.setBackgroundResource(R.drawable.connected);
                 }else {
@@ -598,39 +696,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-        int getTempFromModbus = ModbusSlave.temperature;
-        int getHumiFromModbus = ModbusSlave.humidity;
-        int getPressFromModbus = ModbusSlave.pressure;
-
-        double doubleTempTemp = getTempFromModbus/10.0;
-        double doubleHumiTemp = getHumiFromModbus/10.0;
-        double doublePressTemp = getPressFromModbus*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit;
-
-
-        stringTempTemp = myformat.format(doubleTempTemp);
-        stringHumiTemp = myformat.format(doubleHumiTemp);
-        stringPressTemp = myformat.format(doublePressTemp);
-
-        tvTempValue.setText(stringTempTemp+"℃");
-        tvHumiValue.setText(stringHumiTemp+"%H");
-        tvPressValue.setText(stringPressTemp+"KPa");
-
-        tvTempValue.setTextColor(0xdfffffff);
-        tvHumiValue.setTextColor(0xdfffffff);
-        tvPressValue.setTextColor(0xdfffffff);
-
-        tempDisplay.setSpeed(getTempFromModbus+300);
+        tempDisplay.setSpeed(getTempFromModbus);
         humiDisplay.setSpeed(getHumiFromModbus);
         pressDisplay.setSpeed(getPressFromModbus);
 
         alermFlag = !alermFlag;
         if (modbusSlave.getOverPressure() == 1){
             if (alermFlag){
-                tvPressValue.setText("");
+                tvHumiValue.setText("");
             }else{
-                tvPressValue.setText(stringPressTemp+"KPa");
-                tvPressValue.setTextColor(0xdfff0000);
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvHumiValue.setTextColor(0xdfff0000);
 
                 if (!muteFlag){
                     playSounds(1,1);
@@ -640,16 +716,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (modbusSlave.getUnderPressure() == 1){
             if (alermFlag){
-                tvPressValue.setText("");
+                tvHumiValue.setText("");
             }else{
-                tvPressValue.setText(stringPressTemp+"KPa");
-                tvPressValue.setTextColor(0xDFFFFF00);
+                tvHumiValue.setText(stringHumiTemp+"KPa");
+                tvHumiValue.setTextColor(0xDFFFFF00);
                 if (!muteFlag){
                     playSounds(2,1);
                 }
             }
         }
-
     }
 
     private void playSounds(int sound, int number){
@@ -661,12 +736,12 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void pressDisplayInit() {
-        /*
+
         String[] pressFixedLevel={"-250 pa","-220 pa","-190 pa","-160 pa","-130 pa","-100 pa","-70 pa","-40 pa","-10 pa","20 pa","50 pa"};
         pressDisplay.setMark(" 当前压力");
         pressDisplay.setSpeedUint("pa");
         pressDisplay.setFixedLevel(pressFixedLevel);
-        */
+
     }
 
     private  void tempDisplayInit(){

@@ -61,10 +61,6 @@ public class TrendLineChart extends Activity{
         lineChartInit();
 
         timer1s.schedule(taskPoll,1000,1000);//5ms后开始，每5ms轮询一次
-
-
-
-
     }
 
 
@@ -85,7 +81,6 @@ public class TrendLineChart extends Activity{
 
     private void lineChartUpdate(int temp,int humi,int press){
 
-
         for (int i = 0;i<29;i++ ){                  //数组向前移位
 
             tempArray[i] = tempArray[i+1];
@@ -94,10 +89,9 @@ public class TrendLineChart extends Activity{
 
         }
 
-        tempArray[29] = (float) (temp/10.0);        //读取的实时数据填补到最后一位
-        humiArray[29] = (float) (humi/10.0);
+        tempArray[29] = (float) (temp*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit);  //读取的实时数据填补到最后一位
+        humiArray[29] = (float) (humi*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit);
         pressArray[29] = (float) (press*(pressUpperLimit-pressLowLimit)/1000.0 + pressLowLimit);   //0-1000转换成-250 -- 50
-
 
         if (entriesTemp != null){                   //清空上一次的List
             entriesTemp.clear();
@@ -113,31 +107,28 @@ public class TrendLineChart extends Activity{
             entriesPress.clear();
         }
 
-
         for (int i = 0 ; i < 30 ; i++){                     //把数组数据填到List中
             entriesTemp.add(new Entry(i ,tempArray[i]));
             entriesHumi.add(new Entry(i ,humiArray[i]));
             entriesPress.add(new Entry(i ,pressArray[i]));
         }
 
-
-        LineDataSet set = new LineDataSet(entriesTemp, "温度(℃)");
+        LineDataSet set = new LineDataSet(entriesTemp, "压差1(KPa)");
         set.setColor(Color.RED);                                     //设置线条颜色
         set.setDrawValues(true);                                      //设置显示数据点值
         set.setValueTextColor(Color.RED);                             //设置显示值的字体颜色
         set.setValueTextSize(12);                                     //设置显示值的字体大小
 
         //再创建一个折线对象set1：
-        LineDataSet set1 = new LineDataSet(entriesHumi,"湿度(RH)");
+        LineDataSet set1 = new LineDataSet(entriesHumi,"压差2(KPa)");
         set1.setColor(getResources().getColor(R.color.colorPrimaryDark));    //给线条设置颜色
         //set1.setAxisDependency(YAxis.AxisDependency.RIGHT);                  //设置该折线的y值依赖右y轴 也可不设置 默认都依赖左y轴
         set1.setDrawValues(true);
         set1.setValueTextColor(getResources().getColor(R.color.colorPrimaryDark));
         set1.setValueTextSize(12);
 
-
         //再创建一个折线对象set1：
-        LineDataSet set2 = new LineDataSet(entriesPress,"压差(KPa)");
+        LineDataSet set2 = new LineDataSet(entriesPress,"压差3(KPa)");
         set2.setColor(Color.BLACK);    //给线条设置颜色
         set2.setAxisDependency(YAxis.AxisDependency.RIGHT);                  //设置该折线的y值依赖右y轴 也可不设置 默认都依赖左y轴
         set2.setDrawValues(true);
@@ -168,8 +159,8 @@ public class TrendLineChart extends Activity{
 
         leftAxis.setTextSize(12f);
         leftAxis.setAxisLineWidth(2);
-        leftAxis.setAxisMaximum(100);
-        leftAxis.setAxisMinimum(-30);
+        leftAxis.setAxisMaximum(pressUpperLimit);
+        leftAxis.setAxisMinimum(pressLowLimit);
         //  leftAxis.setDrawGridLines(false);              //网格线
 
         YAxis rightAxis = lineChart.getAxisRight();     //右Y轴属性

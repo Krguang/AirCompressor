@@ -32,7 +32,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="温度/湿度/压差趋势"
+        android:text="压差趋势"
         android:textColor="#ffffffff"
         android:textSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
